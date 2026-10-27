@@ -7,7 +7,7 @@ const accountSchema = new mongoose.Schema({
   username: { type: String, lowercase: true, trim: true, sparse: true, unique: true },
   phone: { type: String, trim: true, default: "" },
   passwordHash: { type: String, required: true, select: false },
-  role: { type: String, enum: ["student", "teacher", "admin", "superadmin"], required: true, immutable: true },
+  role: { type: String, enum: ["student", "teacher", "admin", "superadmin"], required: true },
   status: { type: String, enum: ["active", "pending", "suspended"], default: "pending", index: true },
   avatarUrl: { type: String, default: "" },
   teacherRecordId: { type: mongoose.Schema.Types.ObjectId, ref: "Teacher", default: null, index: true },
