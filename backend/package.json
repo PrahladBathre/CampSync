@@ -8,12 +8,25 @@
     "dev": "set NODE_ENV=development && nodemon src/index.js",
     "prod": "set NODE_ENV=production && nodemon src/index.js",
     "start": "node src/index.js",
-    "test": "node --test src/middleware/accountAuth.middleware.test.js"
+    "test": "node --test src/middleware/accountAuth.middleware.test.js src/middleware/permissions.middleware.test.js"
   },
-  "keywords": ["backend", "mongoose", "mongoDB", "bcrypt", "aggregate", "expressJS", "web", "token"],
+  "keywords": [
+    "backend",
+    "mongoose",
+    "mongoDB",
+    "bcrypt",
+    "aggregate",
+    "expressJS",
+    "web",
+    "token"
+  ],
   "author": "Prahlad Bathre",
   "license": "ISC",
-  "devDependencies": { "express": "^5.1.0", "mongoose": "^8.14.0", "nodemon": "^3.1.10" },
+  "devDependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.14.0",
+    "nodemon": "^3.1.10"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "chalk": "^5.4.1",
