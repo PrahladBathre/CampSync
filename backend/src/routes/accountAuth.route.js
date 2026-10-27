@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { changeOwnPassword, getAccountSession, loginAccount, logoutAccount, updateOwnProfile } from "../controllers/accountAuth.controller.js";
+import { requireAccount } from "../middleware/accountAuth.middleware.js";
+const accountAuthRoutes = Router();
+accountAuthRoutes.post("/login", loginAccount);
+accountAuthRoutes.get("/me", requireAccount, getAccountSession);
+accountAuthRoutes.post("/logout", requireAccount, logoutAccount);
+accountAuthRoutes.patch("/profile", requireAccount, updateOwnProfile);
+accountAuthRoutes.patch("/password", requireAccount, changeOwnPassword);
+export { accountAuthRoutes };
