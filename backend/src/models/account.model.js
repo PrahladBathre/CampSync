@@ -18,20 +18,17 @@ const accountSchema = new mongoose.Schema({
 }, { timestamps: true, minimize: false });
 
 accountSchema.pre("save", async function () {
-  if (this.isModified("passwordHash") && !/^\\$2[aby]\\$/.test(this.passwordHash)) {
+  if (this.isModified("passwordHash") && !this.passwordHash.startsWith("$2")) {
     this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
   }
 });
-
 accountSchema.methods.verifyPassword = function (candidate) {
   return bcrypt.compare(candidate, this.passwordHash);
 };
-
 accountSchema.set("toJSON", { transform(_doc, ret) {
   delete ret.passwordHash;
   delete ret.tokenVersion;
   delete ret.__v;
   return ret;
 } });
-
 export const Account = mongoose.model("Account", accountSchema);
