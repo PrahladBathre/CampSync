@@ -1,81 +1,50 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
-import RecentActivity from "./RecentActivity";
+import { Box, Typography, CircularProgress, Alert } from "@mui/material";
+import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
+import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
+import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
 import PageSectionWrapper from "../../components/PageSectionWrapper";
-import GlassEffect from "../../components/GlassEffect";
+import RecentActivity from "./RecentActivity";
 import axios from "axios";
-import UserProvider, { UserContext } from "../UserContext/UserContext";
+import { UserContext } from "../UserContext/UserContext";
+import "./dashboard-refresh.css";
 
-const Dashboard = () => {
-  const user = useContext(UserContext);
-  const loggedUser = user?.user;
-  console.log(loggedUser);
-  const [Faculty, setFaculty] = useState(0);
-  const [Enrolled, setEnrolled] = useState(0);
-  const [Courses, setCourses] = useState(0);
-  const [Academic, setAcademic] = useState(0);
-  const fetchDocuments = async () => {
-    const response = await axios
-      .get("/api/v1/count-doc")
-      .then((response) => response?.data?.data);
-    setAcademic(response?.subjects);
-    setCourses(response?.courses);
-    setEnrolled(response?.students);
-    setFaculty(response?.teachers);
-  };
+const stats = [
+  { key: "teachers", label: "Faculty members", icon: Groups2OutlinedIcon, tone: "teal" },
+  { key: "students", label: "Enrolled students", icon: SchoolOutlinedIcon, tone: "purple" },
+  { key: "courses", label: "Active courses", icon: MenuBookOutlinedIcon, tone: "blue" },
+  { key: "subjects", label: "Academic subjects", icon: AutoStoriesOutlinedIcon, tone: "amber" },
+];
 
+export default function Dashboard() {
+  const { user } = useContext(UserContext);
+  const [counts, setCounts] = useState({ teachers: 0, students: 0, courses: 0, subjects: 0 });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   useEffect(() => {
-    fetchDocuments();
-  }, [Faculty]);
-  return (
-    <PageSectionWrapper>
-      <Box width="100%" display="flex" m={1} mx={0}>
-        <GlassEffect sx={{ flex: "1" }}>
-          <Box textAlign="center">
-            <Typography
-              variant="h4"
-              sx={{
-                textTransform: "capitalize",
-              }}
-            >
-              {`Welcome in, ${loggedUser?.teacherFullName}`}
-            </Typography>
-            <Typography variant="h4"> </Typography>
-          </Box>
-        </GlassEffect>
-      </Box>
-      <Box display="flex" flexWrap="wrap" gap={1} width="100%" flexGrow="1">
-        <GlassEffect sx={{ flex: "1" }}>
-          <Box textAlign="center">
-            <Typography variant="h4"> {Faculty}</Typography>
-            <Typography variant="h5">Faculty Members</Typography>
-          </Box>
-        </GlassEffect>
-        <GlassEffect sx={{ flex: "1" }}>
-          <Box textAlign="center">
-            <Typography variant="h4"> {Enrolled}</Typography>
-            <Typography variant="h5">Enrolled Students</Typography>
-          </Box>
-        </GlassEffect>
-        <GlassEffect sx={{ flex: "1" }}>
-          <Box textAlign="center">
-            <Typography variant="h4"> {Courses}</Typography>
-            <Typography variant="h5">Available Courses</Typography>
-          </Box>
-        </GlassEffect>
-        <GlassEffect sx={{ flex: "1" }}>
-          <Box textAlign="center">
-            <Typography variant="h4"> {Academic}</Typography>
-            <Typography variant="h5"> Academic Subjects</Typography>
-          </Box>
-        </GlassEffect>
-      </Box>
-      <Box width="100%" display="flex" m={1} mx={0}>
-        <RecentActivity />
-      </Box>
-    </PageSectionWrapper>
-  );
-};
-
-export default Dashboard;
+    let alive = true;
+    axios.get("/api/v1/count-doc", { withCredentials: true })
+      .then(({ data }) => {
+        const payload = data?.data || {};
+        if (alive) setCounts({ teachers: Number(payload.teachers) || 0, students: Number(payload.students) || 0, courses: Number(payload.courses) || 0, subjects: Number(payload.subjects) || 0 });
+      })
+      .catch(() => { if (alive) setError("We couldn’t load the latest totals. Your other pages may still be available."); })
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
+  }, []);
+  const name = user?.displayName || user?.teacherFullName || user?.name || "there";
+  return <PageSectionWrapper><Box className="camp-dashboard">
+    <Box className="camp-hero"><Box className="camp-hero-copy">
+      <span className="camp-eyebrow">YOUR ACADEMIC WORKSPACE</span>
+      <Typography component="h1" className="camp-hero-title">Good to see you, {name.split(" ")[0]}.</Typography>
+      <Typography className="camp-hero-subtitle">A clearer view of your department, classes, and campus activity.</Typography>
+      <Box className="camp-hero-chip"><span className="camp-live-dot" /> Overview at a glance</Box>
+    </Box><Box className="camp-hero-art" aria-hidden="true"><Box className="camp-orbit camp-orbit-one"/><Box className="camp-orbit camp-orbit-two"/><Box className="camp-art-card"><SchoolOutlinedIcon/><span>Learn</span><strong>Grow</strong></Box><Box className="camp-art-spark">✦</Box></Box></Box>
+    {error && <Alert severity="warning" sx={{mt:2}}>{error}</Alert>}
+    <Box className="camp-section-heading"><Box><Typography component="h2">Campus overview</Typography><Typography>Key numbers across your academic workspace</Typography></Box>{loading && <CircularProgress size={20} aria-label="Loading campus totals"/>}</Box>
+    <Box className="camp-stat-grid">{stats.map(({key,label,icon:Icon,tone})=><Box className="camp-stat-card" key={key}><Box className={`camp-stat-icon ${tone}`}><Icon/></Box><Box className="camp-stat-meta"><Typography>{label}</Typography><Typography component="strong">{loading?"—":counts[key].toLocaleString()}</Typography><span>Academic records</span></Box></Box>)}</Box>
+    <Box className="camp-activity-heading"><Box><Typography component="h2">Recent activity</Typography><Typography>Stay in the loop with the latest campus updates.</Typography></Box></Box>
+    <Box className="camp-activity-panel"><RecentActivity/></Box>
+  </Box></PageSectionWrapper>;
+}
