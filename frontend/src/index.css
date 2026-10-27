@@ -1,36 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap");
-html,
-body,
-#root,
-.app,
-.content {
-  height: 100%;
-  width: 100%;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.app {
-  display: flex;
-  position: relative;
-  overflow-x:hidden;
-  overflow-y: auto;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* track */
-::-webkit-scrollbar-track {
-  background-color: #e0e0e0;
-}
-
-/* handle */
-::-webkit-scrollbar-thumb {
-  background-color: #555;
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: #888;
-}
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+:root{font-family:"DM Sans",sans-serif;color:#18212f;background:#f5f7fb;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;--camp-ink:#18212f;--camp-muted:#718096;--camp-teal:#087f8c;--camp-purple:#7548c8;--camp-border:#e6eaf1;--camp-surface:#fff}
+*{box-sizing:border-box}html,body,#root{min-height:100%;width:100%;margin:0}body{min-width:320px;background:#f5f7fb}button,input,textarea,select{font:inherit}a{color:inherit}::selection{background:rgba(8,127,140,.18)}:focus-visible{outline:3px solid rgba(8,127,140,.45);outline-offset:2px}::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-track{background:#f1f4f8}::-webkit-scrollbar-thumb{background:#c7d0dc;border-radius:10px}::-webkit-scrollbar-thumb:hover{background:#9eacbd}
+.app{display:flex;position:relative;min-height:100vh;width:100%;overflow-x:clip;color:var(--camp-ink);background:radial-gradient(ellipse at 92% 0%,rgba(117,72,200,.055),transparent 28rem),#f5f7fb}.content{min-width:0;flex:1;width:100%;padding:clamp(12px,2.3vw,30px);overflow-x:clip}.content>*{max-width:1600px;margin-left:auto;margin-right:auto}.MuiPaper-root{background-image:none!important}.MuiButton-root{text-transform:none!important;font-weight:700!important;border-radius:10px!important}.MuiOutlinedInput-root{border-radius:11px!important}.MuiTableContainer-root,.MuiDataGrid-root{border-color:var(--camp-border)!important}@media(max-width:760px){.app{display:block}.content{padding:12px}}
