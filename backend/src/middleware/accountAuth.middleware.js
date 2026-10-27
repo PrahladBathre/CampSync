@@ -4,7 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const requireAccount = asyncHandler(async (req, _res, next) => {
-  const token = req.cookies?.accessToken || req.header("Authorization")?.match(/^Bearer\\s+(.+)$/i)?.[1];
+  const token = req.cookies?.accessToken || req.header("Authorization")?.match(/^Bearer\s+(.+)$/i)?.[1];
   if (!token) throw new ApiError(401, "Authentication required.");
   let payload;
   try { payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); }
@@ -17,7 +17,6 @@ export const requireAccount = asyncHandler(async (req, _res, next) => {
   req.account = account;
   next();
 });
-
 export const allowRoles = (...roles) => (req, _res, next) => {
   if (!req.account || !roles.includes(req.account.role)) return next(new ApiError(403, "You do not have permission to perform this action."));
   next();
