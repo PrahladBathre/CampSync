@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon src/index.js",
     "prod": "set NODE_ENV=production && nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node --test src/middleware/accountAuth.middleware.test.js src/middleware/permissions.middleware.test.js"
   },
   "keywords": [
     "backend",
@@ -16,7 +17,6 @@
     "bcrypt",
     "aggregate",
     "expressJS",
-    "JSON",
     "web",
     "token"
   ],
