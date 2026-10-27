@@ -20,15 +20,12 @@ export const loginAccount = asyncHandler(async (req, res) => {
   if (!valid) throw new ApiError(401, "Invalid credentials or account unavailable.");
   return res.status(200).cookie("accessToken", createToken(account), cookieOptions()).json(new Apiresponse(200, publicAccount(account), "Signed in successfully."));
 });
-
 export const getAccountSession = asyncHandler(async (req, res) => res.status(200).json(new Apiresponse(200, publicAccount(req.account), "Session restored.")));
-
 export const logoutAccount = asyncHandler(async (req, res) => {
   await Account.updateOne({ _id: req.account._id }, { $inc: { tokenVersion: 1 } });
   const options = { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/" };
   return res.clearCookie("accessToken", options).clearCookie("refreshToken", options).status(200).json(new Apiresponse(200, {}, "Signed out successfully."));
 });
-
 export const updateOwnProfile = asyncHandler(async (req, res) => {
   const updates = {};
   for (const key of ["displayName", "phone"]) {
@@ -43,11 +40,10 @@ export const updateOwnProfile = asyncHandler(async (req, res) => {
   const account = await Account.findByIdAndUpdate(req.account._id, { $set: updates }, { new: true, runValidators: true });
   return res.status(200).json(new Apiresponse(200, publicAccount(account), "Profile updated."));
 });
-
 export const changeOwnPassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body || {};
   if (typeof currentPassword !== "string" || typeof newPassword !== "string") throw new ApiError(400, "Current password and new password are required.");
-  if (newPassword.length < 10 || newPassword.length > 128 || !/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/\\d/.test(newPassword)) throw new ApiError(400, "New password must be 10–128 characters and include uppercase, lowercase, and a number.");
+  if (newPassword.length < 10 || newPassword.length > 128 || !/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/\d/.test(newPassword)) throw new ApiError(400, "New password must be 10–128 characters and include uppercase, lowercase, and a number.");
   const account = await Account.findById(req.account._id).select("+passwordHash");
   if (!(await account.verifyPassword(currentPassword))) throw new ApiError(401, "Current password is incorrect.");
   account.passwordHash = newPassword;
