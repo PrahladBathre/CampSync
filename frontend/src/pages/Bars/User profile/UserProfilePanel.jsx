@@ -1,86 +1,35 @@
-/* eslint-disable no-unused-vars */
-import React, { useContext, useState } from "react";
-import Unavailable from "../../../components/Unavailable";
-import {
-  Box,
-  Button,
-  IconButton,
-  Popper,
-  Typography,
-  useScrollTrigger,
-  useTheme,
-} from "@mui/material";
+import { useContext, useState } from "react";
+import { Box, Button, Popper, Typography, Alert } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { UserContext } from "../../UserContext/UserContext";
 import { logoutTeacher } from "../../../services/teacher";
-import { getColorTokens } from "../../../theme/theme";
 import { useNavigate } from "react-router-dom";
 import UpdateUser from "../../UpdateUser/UpdateUser";
-const UserProfile = ({ id, open, pop }) => {
-  const colors = getColorTokens(useTheme().palette.mode);
+
+const UserProfile = ({ id, open, pop, handleClick }) => {
+  const { user, clearUser } = useContext(UserContext);
   const navigate = useNavigate();
-  // const { user, updateUser, clearUser } = useContext(UserContext);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [error, setError] = useState("");
+  const [loggingOut, setLoggingOut] = useState(false);
   const logoutHandler = async () => {
-    const response = await logoutTeacher();
-    if (response.status == "200") {
-      navigate("/login");
-    }
-    console.log("response from logout ", response);
+    setLoggingOut(true); setError("");
+    try { await logoutTeacher(); clearUser(); handleClick?.(); navigate("/login", { replace: true }); }
+    catch (e) { setError(e?.response?.data?.message || "Could not sign out. Please try again."); }
+    finally { setLoggingOut(false); }
   };
-
-  const [isUpdatePageOpen, setUpdatePageOpen] = useState(false);
-  return (
-    <Box>
-      <Popper
-        id={id}
-        open={open}
-        anchorEl={pop}
-        sx={{
-          p: 1,
-          borderRadius: "4px",
-          border: "",
-          background: colors.gradient[100],
-        }}
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          <IconButton onClick={() => setUpdatePageOpen(true)}>
-            <SettingsOutlinedIcon />
-            <Typography
-              variant="h6"
-              sx={{
-                px: 1,
-              }}
-            >
-              Setting
-            </Typography>
-          </IconButton>
-          <IconButton onClick={logoutHandler}>
-            <LogoutIcon />
-            <Typography
-              variant="h6"
-              sx={{
-                px: 1,
-              }}
-            >
-              {" "}
-              Logout
-            </Typography>
-          </IconButton>
-        </Box>
-      </Popper>
-      {isUpdatePageOpen && (
-        <Box>
-          <UpdateUser  />
-        </Box>
-      )}
-    </Box>
-  );
+  return <>
+    <Popper id={id} open={open} anchorEl={pop} placement="bottom-end" sx={{ zIndex: 1400 }}>
+      <Box sx={{ mt: 1, p: 1.5, minWidth: 220, border: 1, borderColor: "divider", borderRadius: 2, bgcolor: "background.paper", boxShadow: 6 }}>
+        <Typography fontWeight={700} sx={{ px: 1, pt: .5 }}>{user?.teacherFullName || user?.displayName || "Your account"}</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ px: 1, mb: 1.5 }}>{user?.teacherEmail || user?.email || ""}</Typography>
+        {error && <Alert severity="error" sx={{ mb: 1 }}>{error}</Alert>}
+        <Button fullWidth startIcon={<SettingsOutlinedIcon />} onClick={() => { setSettingsOpen(true); handleClick?.(); }} sx={{ justifyContent: "flex-start" }}>Profile settings</Button>
+        <Button fullWidth color="error" startIcon={<LogoutIcon />} onClick={logoutHandler} disabled={loggingOut} sx={{ justifyContent: "flex-start" }}>{loggingOut ? "Signing out…" : "Sign out"}</Button>
+      </Box>
+    </Popper>
+    <UpdateUser open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+  </>;
 };
-
 export default UserProfile;
