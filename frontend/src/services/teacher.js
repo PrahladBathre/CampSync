@@ -97,16 +97,15 @@ export const getCurrentTeacher = async () => {
 // Update teacher details
 
 export const updateTeacherDetails = async (updateData) => {
-  const teacher = {
-    ...updateData,
-    teacherFullName: updateData?.teacherFullName,
-    teacherEmail: updateData?.teacherEmail,
-    teacherUsername: updateData?.teacherUsername,
-    teacherPassword: updateData?.teacherPassword,
-    teacherContactInfo: updateData?.teacherContactInfo,
-    teacherAssignedSubjects: updateData?.teacherAssignedSubjects,
-  };
-  const { _id, ...data } = teacher;
+  const {
+    teacherFullName,
+    teacherEmail,
+    teacherUsername,
+    teacherContactInfo,
+    teacherGender,
+  } = updateData || {};
+  const data = { teacherFullName, teacherEmail, teacherUsername, teacherContactInfo, teacherGender };
+  Object.keys(data).forEach((key) => data[key] === undefined && delete data[key]);
   const update = await axios
     .patch("/api/teacher/update-details", data, { withCredentials: true })
     .then((res) => res.data);
