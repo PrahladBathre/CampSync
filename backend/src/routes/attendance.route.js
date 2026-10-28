@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 import {
   ModifyAttendance,
   removeStudentAttendance,
@@ -8,6 +9,7 @@ import {
 } from "../controllers/attendance.controller.js";
 
 const attendanceRoutes = Router();
+attendanceRoutes.use(verifyJWT);
 
 attendanceRoutes.route("/count").get(attendanceCount); // get attendance count
 
