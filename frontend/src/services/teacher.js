@@ -24,9 +24,7 @@ export const getTeacherById = async (teacherId) => {
     .get(`/api/teacher/${teacherId}`, {
       withCredentials: true,
     })
-    .then((res) => {
-      res.data.data;
-    });
+    .then((res) => res.data.data);
   return getTeacher;
 };
 
@@ -63,8 +61,8 @@ export const loginTeacher = async (teacher) => {
 };
 // Logout teacher
 export const logoutTeacher = async () => {
-  const logout = await axios.post("/api/teacher/logout", {
-    withCredentials: true, // ✅ Important for cookies/session
+  const logout = await axios.post("/api/teacher/logout", {}, {
+    withCredentials: true,
   });
   return logout;
 };
@@ -79,9 +77,7 @@ export const refreshAccessToken = async (refreshToken) => {
         withCredentials: true, // ✅ Important for cookies/session
       }
     )
-    .then((res) => {
-      res.data;
-    });
+    .then((res) => res.data);
   return refresh;
 };
 
@@ -117,7 +113,8 @@ export const getCurrentTeacher = async () => {
 // Update teacher details
 
 export const updateTeacherDetails = async (updateData) => {
-  const id = updateData?._id || updateData?.id;\n  if (!id) throw new Error("A teacher ID is required to update profile details.");
+  const id = updateData?._id || updateData?.id;
+  if (!id) throw new Error("A teacher ID is required to update profile details.");
   const teacher = {
     ...updateData,
     teacherFullName: updateData?.teacherFullName,
