@@ -11,6 +11,7 @@ import {
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const courseRoutes = Router();
+courseRoutes.use(verifyJWT);
 courseRoutes.get("/list", courseList);
 courseRoutes.route("/count").get(courseCount);
 courseRoutes.route("/").post(addCourse).get(getAllCourses);
