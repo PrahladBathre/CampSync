@@ -214,9 +214,10 @@ const loginTeacher = asyncHandler(async (req, res) => {
     );
   }
 
-  const teacher = await Teacher.findOne({
-    $or: [{ teacherUsername }, { teacherEmail }],
-  });
+  const identifierQuery = teacherEmail
+    ? { teacherEmail: String(teacherEmail).trim().toLowerCase() }
+    : { teacherUsername: String(teacherUsername).trim().toLowerCase() };
+  const teacher = await Teacher.findOne(identifierQuery).select("+teacherPassword");
 
   if (!teacher) {
     throw new ApiError(401, "Invalid credentials.");
@@ -385,7 +386,7 @@ const updateTeacherDetails = asyncHandler(async (req, res) => {
     teacherUsername,
     teacherId,
     teacherContactInfo,
-    gender,
+    teacherGender,
   } = req.body;
 
   if (
@@ -395,7 +396,7 @@ const updateTeacherDetails = asyncHandler(async (req, res) => {
       teacherUsername ||
       teacherId ||
       teacherContactInfo ||
-      gender
+      teacherGender
     )
   ) {
     throw new ApiError(400, "Please provide at least one field to update.");
@@ -420,8 +421,8 @@ const updateTeacherDetails = asyncHandler(async (req, res) => {
         ...(teacherContactInfo && {
           teacherContactInfo: teacherContactInfo.trim(),
         }),
-        ...(gender && {
-          gender: gender,
+        ...(teacherGender && {
+          teacherGender,
         }),
       },
     },
