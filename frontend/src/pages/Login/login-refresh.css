@@ -1,0 +1,27 @@
+.camp-login-shell{min-height:100vh;width:100%;display:grid;grid-template-columns:minmax(320px,.92fr) 1.08fr}
+.camp-login-story{position:relative;isolation:isolate;overflow:hidden;min-height:100vh;padding:32px clamp(24px,4vw,64px);display:flex;flex-direction:column;border-right:1px solid rgba(127,127,127,.25)}
+.camp-login-brand{position:relative;z-index:2}.camp-login-brand svg{max-width:185px}
+.camp-login-story-copy{position:relative;z-index:2;margin:auto 0;max-width:510px;padding:48px 0}
+.camp-login-kicker{font-size:11px;font-weight:800;letter-spacing:.16em}
+.camp-login-story-copy h1{font-size:clamp(30px,3vw,44px);font-weight:700;line-height:1.2;letter-spacing:-.025em;margin:18px 0}
+.camp-login-story-subtitle.MuiTypography-root{font-size:15px;line-height:1.75;max-width:420px}
+.camp-login-feature{display:flex;gap:14px;align-items:flex-start;margin-top:26px}
+.camp-login-feature>span{display:grid;place-items:center;width:34px;height:34px;flex-shrink:0;border-radius:8px;border:1px solid rgba(127,127,127,.3);font-size:11px;font-weight:700}
+.camp-login-feature strong{display:block;font-size:13px}.camp-login-feature p{font-size:12px;margin-top:4px}
+.camp-login-story-footer{position:relative;z-index:2;font-size:12px}.camp-login-story-footer span{padding:0 7px}
+.camp-login-decoration{position:absolute;z-index:-1;border:1px solid rgba(127,127,127,.12);border-radius:50%;transform:rotate(-24deg)}
+.camp-login-decoration-one{width:440px;height:300px;right:-230px;top:14%}.camp-login-decoration-two{width:360px;height:450px;right:-140px;bottom:-200px;transform:rotate(36deg)}
+.camp-login-main{display:grid;place-items:center;padding:40px 24px;min-width:0}
+.camp-login-card{width:min(100%,420px);display:flex;flex-direction:column}
+.camp-login-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;border:1px solid rgba(127,127,127,.25);margin-bottom:20px}
+.camp-login-icon svg{font-size:25px}.camp-login-title.MuiTypography-root{font-weight:700;font-size:30px;letter-spacing:-.025em}
+.camp-login-subtitle.MuiTypography-root{margin-top:8px;font-size:14px}
+.camp-login-fields{display:grid;gap:16px;margin-top:28px}
+.camp-login-submit.MuiButton-root{min-height:48px;margin-top:22px}
+.camp-login-switch.MuiButton-root{align-self:center;margin-top:12px;font-size:12px}
+.camp-login-signup{display:flex;align-items:center;justify-content:center;gap:4px;border-top:1px solid rgba(127,127,127,.25);margin-top:26px;padding-top:20px}
+.camp-login-signup p{font-size:13px}.camp-login-signup .MuiButton-root{font-size:13px}
+.camp-login-footnote.MuiTypography-root{text-align:center;font-size:11px;margin-top:30px}
+.camp-login-mobile-brand{display:none}
+@media(max-width:850px){.camp-login-shell{grid-template-columns:1fr}.camp-login-story{display:none}.camp-login-main{min-height:100vh;padding:26px 20px}.camp-login-mobile-brand{display:block;margin-bottom:32px}.camp-login-mobile-brand svg{max-width:165px}.camp-login-card{width:min(100%,430px)}}
+@media(max-width:420px){.camp-login-title.MuiTypography-root{font-size:27px}.camp-login-signup{flex-wrap:wrap}}

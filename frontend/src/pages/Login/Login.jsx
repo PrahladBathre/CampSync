@@ -1,248 +1,73 @@
-/* eslint-disable no-unused-vars */
-import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
-import { getColorTokens } from "../../theme/theme";
-import { createContext, useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { Alert, Box, Button, CircularProgress, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import { loginTeacher } from "../../services/teacher";
 import LogoSync from "../../components/LogoSync";
 import { useNavigate } from "react-router-dom";
-import Front from "../Spline/Front";
-import UserProvider, { UserContext } from "../UserContext/UserContext";
+import { UserContext } from "../UserContext/UserContext";
+import "./login-refresh.css";
 
-const Login = () => {
-  const colors = getColorTokens(useTheme().palette.mode);
+export default function Login() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
-  const [isAuthenticated, setAuthenticated] = useState("");
-  const [isEmailLogin, setEmailLogin] = useState(false);
-  const [isLoginError, setLoginError] = useState("");
-
   const { updateUser } = useContext(UserContext);
+  const [user, setUser] = useState({ teacherUsername: "", teacherEmail: "", teacherPassword: "" });
+  const [isEmailLogin, setEmailLogin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handlerLogin = async (loginData) => {
-    setLoginError("");
-    setAuthenticated("");
-    let teacher;
-    if (loginData?.teacherEmail && isEmailLogin) {
-      teacher = {
-        ...loginData,
-        teacherUsername: null,
-        teacherEmail: loginData?.teacherEmail,
-        teacherPassword: loginData?.teacherPassword,
-      };
-    } else {
-      teacher = {
-        ...loginData,
-        teacherEmail: null,
-        teacherUsername: loginData?.teacherUsername,
-        teacherPassword: loginData?.teacherPassword,
-      };
-    }
-    console.log(teacher);
-
+  const handlerLogin = async (event) => {
+    event.preventDefault();
+    if (loading) return;
+    setError("");
+    setLoading(true);
+    const credentials = isEmailLogin
+      ? { teacherEmail: user.teacherEmail.trim(), teacherUsername: null, teacherPassword: user.teacherPassword }
+      : { teacherEmail: null, teacherUsername: user.teacherUsername.trim(), teacherPassword: user.teacherPassword };
     try {
-      const logged = await loginTeacher(teacher);
-      // console.log("response", logged);
-      if (logged?.status == 200) {
-        setAuthenticated(logged?.data?.message);
-        navigate("/");
+      const logged = await loginTeacher(credentials);
+      if (logged?.status === 200) {
         updateUser(logged.data.data);
+        navigate("/");
       }
-    } catch (error) {
-      console.log(error);
-      setLoginError(error.response?.data?.message || "Something went wrong!");
+    } catch (e) {
+      setError(e.response?.data?.message || "We couldn’t sign you in. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSignUp = () => {
-    navigate("/register");
-  };
-
-  return (
-    <Box
-      position="relative"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
-      height="100%"
-    >
-      {/* border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(35px);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 80px rgba(0, 0, 0, 0.25); */}
-      <Box
-        sx={{
-          position: {
-            xs: "absolute",
-            md: "static",
-          },
-          background: {
-            xs: "rgb(0, 0, 0, 0.1)",
-            md: "transparent",
-          },
-          backdropFilter: {
-            xs: "blur(4px)",
-            md: "none",
-          },
-        }}
-        overflow="hidden"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="100%"
-        height="100%"
-        flexDirection="column"
-      >
-        <Box mt={2}>
-          <LogoSync />
-        </Box>
-
-        {isLoginError && (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              // backgroundColor: "green",
-              width: "80%",
-              textAlign: "center",
-            }}
-          >
-            <Typography color="error" variant="h5">
-              {isLoginError}
-            </Typography>
-          </Box>
-        )}
-        {isAuthenticated && (
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Typography color="success" variant="h5">
-              {isAuthenticated}
-            </Typography>
-          </Box>
-        )}
-
-        <Box
-          maxWidth="480px"
-          maxHeight="480px"
-          p={{ xs: 2, lg: 4 }}
-          gap={4}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Typography variant="h2" fontWeight="600">
-              Login to your account
-            </Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-            gap={4}
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap={2}
-              width={{ xs: "240px", sm: "400px" }}
-            >
-              {isEmailLogin ? (
-                <TextField
-                  label="Email"
-                  required
-                  variant="outlined"
-                  name="teacherEmail"
-                  value={user.teacherEmail || ""}
-                  onChange={(e) =>
-                    setUser({ ...user, [e.target.name]: e.target.value })
-                  }
-                />
-              ) : (
-                <TextField
-                  label="Username"
-                  required
-                  variant="outlined"
-                  name="teacherUsername"
-                  value={user.teacherUsername || ""}
-                  onChange={(e) =>
-                    setUser({ ...user, [e.target.name]: e.target.value })
-                  }
-                />
-              )}
-
-              <TextField
-                label="Password"
-                required
-                variant="outlined"
-                name="teacherPassword"
-                value={user.teacherPassword || ""}
-                onChange={(e) =>
-                  setUser({ ...user, [e.target.name]: e.target.value })
-                }
-              />
-            </Box>
-
-            <Button
-              sx={{
-                background: colors.gradient[100],
-                m: 0,
-                p: 0,
-                "&:hover": {},
-                // background: "rgba(255, 255, 255, 0.03)",
-                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
-                backdropFilter: "blur(0.2px)",
-                borderRadius: "4px",
-                border: "1px solid rgba(255, 255, 255, 0.15)",
-              }}
-              onClick={() => {
-                handlerLogin(user);
-              }}
-            >
-              <Typography
-                sx={{ p: 1.1, width: "180px" }}
-                variant="h5"
-                color={colors.text[100]}
-              >
-                Login
-              </Typography>
-            </Button>
-          </Box>
-
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Typography color="text" variant="h5">
-              Don't have an account?
-            </Typography>
-            <Button onClick={handleSignUp}>
-              <Typography color="pink" variant="h5">
-                Sign up
-              </Typography>
-            </Button>
-          </Box>
-
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button
-              onClick={() => {
-                setEmailLogin((prev) => !prev);
-                setUser({});
-              }}
-            >
-              <Typography color="pink" variant="h5">
-                {isEmailLogin ? "Login using username" : "Login using email"}
-              </Typography>
-            </Button>
-          </Box>
-        </Box>
+  return <Box className="camp-login-shell">
+    <Box className="camp-login-story">
+      <Box className="camp-login-brand"><LogoSync /></Box>
+      <Box className="camp-login-story-copy">
+        <span className="camp-login-kicker">CAMPUS, CONNECTED.</span>
+        <Typography component="h1">A smarter way to manage your academic world.</Typography>
+        <Typography className="camp-login-story-subtitle">Bring campus operations, learning, and everyday coordination into one clear workspace.</Typography>
+        <Box className="camp-login-feature"><span>01</span><Box><strong>One campus workspace</strong><Typography>Academic information in one organized place.</Typography></Box></Box>
+        <Box className="camp-login-feature"><span>02</span><Box><strong>Built for your day</strong><Typography>Quick access to the tools your team uses.</Typography></Box></Box>
       </Box>
-      {/* <Box display="flex" width="100%" height="100%">
-        <Front />
-      </Box> */}
+      <Box className="camp-login-story-footer">CampSync <span>•</span> Your academic workspace</Box>
+      <Box className="camp-login-decoration camp-login-decoration-one"/><Box className="camp-login-decoration camp-login-decoration-two"/>
     </Box>
-  );
-};
-
-export default Login;
+    <Box className="camp-login-main">
+      <Box className="camp-login-mobile-brand"><LogoSync /></Box>
+      <Box component="form" className="camp-login-card" onSubmit={handlerLogin}>
+        <Box className="camp-login-icon"><SchoolRoundedIcon /></Box>
+        <Typography component="h2" className="camp-login-title">Welcome back</Typography>
+        <Typography className="camp-login-subtitle">Sign in to continue to your workspace.</Typography>
+        {error && <Alert severity="error" sx={{mt:2,mb:1}} role="alert">{error}</Alert>}
+        <Box className="camp-login-fields">
+          <TextField fullWidth label={isEmailLogin ? "Email address" : "Username"} name={isEmailLogin ? "teacherEmail" : "teacherUsername"} autoComplete={isEmailLogin ? "email" : "username"} required value={isEmailLogin ? user.teacherEmail : user.teacherUsername} onChange={(e)=>setUser({...user,[e.target.name]:e.target.value})} inputProps={{"aria-label":isEmailLogin ? "Email address" : "Username"}} />
+          <TextField fullWidth label="Password" name="teacherPassword" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={user.teacherPassword} onChange={(e)=>setUser({...user,teacherPassword:e.target.value})} inputProps={{"aria-label":"Password"}} InputProps={{endAdornment:<InputAdornment position="end"><IconButton aria-label={showPassword ? "Hide password" : "Show password"} onClick={()=>setShowPassword(v=>!v)} edge="end">{showPassword ? <VisibilityOffOutlinedIcon/> : <VisibilityOutlinedIcon/>}</IconButton></InputAdornment>}} />
+        </Box>
+        <Button type="submit" fullWidth variant="contained" disabled={loading} className="camp-login-submit">{loading ? <><CircularProgress size={18} color="inherit" sx={{mr:1}}/>Signing you in…</> : "Sign in"}</Button>
+        <Button className="camp-login-switch" onClick={()=>{setEmailLogin(v=>!v);setError("");}}>{isEmailLogin ? "Use username instead" : "Sign in with email instead"}</Button>
+        <Box className="camp-login-signup"><Typography>New to CampSync?</Typography><Button onClick={()=>navigate("/register")}>Create an account</Button></Box>
+        <Typography className="camp-login-footnote">Secure access for your campus community</Typography>
+      </Box>
+    </Box>
+  </Box>;
+}
