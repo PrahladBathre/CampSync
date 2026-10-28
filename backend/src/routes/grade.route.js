@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 import {
   addGrade,
   getAllGrades,
@@ -8,6 +9,7 @@ import {
 } from "../controllers/grade.controller.js";
 
 const gradeRoutes = Router();
+gradeRoutes.use(verifyJWT);
 
 gradeRoutes.route("/count").get(gradeCount);
 gradeRoutes.route("/").post(addGrade).get(getAllGrades);

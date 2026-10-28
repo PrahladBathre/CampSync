@@ -10,7 +10,7 @@ import { upload } from "../middleware/multer.middleware.js";
 
 const teacherRoutes = Router();
 teacherRoutes.route("/refresh-token").post(refreshAccessToken);
-teacherRoutes.route("/count").get(teacherCount);
+teacherRoutes.route("/count").get(verifyJWT, teacherCount);
 teacherRoutes.route("/").get(verifyJWT, getAllTeachers);
 teacherRoutes.route("/register").post(upload.single("teacherAvatar"), registerTeacher);
 teacherRoutes.route("/verifyTeacher").post(confirmTeacherEmailVerification);

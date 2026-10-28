@@ -1,27 +1,31 @@
-export const validInput = (form) => {
+export const validInput = (form = {}) => {
   const err = {};
+  const required = (key, errorKey, message) => {
+    if (!String(form[key] ?? "").trim()) err[errorKey] = message;
+  };
 
-  console.log("form data Inside Validation: ", form);
+  required("teacherFullName", "nameError", "Full name is required");
+  required("teacherEmail", "emailError", "Email is required");
+  required("teacherUsername", "usernameError", "Username is required");
+  required("teacherId", "idError", "Teacher ID is required");
+  required("teacherPassword", "passError", "Password is required");
+  required("teacherContactInfo", "contactError", "Contact number is required");
+  required("teacherGender", "genderError", "Please select a gender");
 
-  if (!form.teacherFullName) {
-    err.nameError = "Full name is required";
+  if (form.teacherEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.teacherEmail.trim())) {
+    err.emailError = "Enter a valid email address";
   }
-  if (!form.teacherEmail) {
-    err.emailError = "Email is required";
+  if (form.teacherUsername && !/^[a-zA-Z0-9]+$/.test(form.teacherUsername.trim())) {
+    err.usernameError = "Use letters and numbers only for your username";
   }
-  if (!form.teacherUsername) {
-    err.usernameError = "Username is required";
+  if (form.teacherId && !/^UICSA[A-Za-z0-9]{0,10}$/.test(form.teacherId.trim())) {
+    err.idError = "Teacher ID must start with UICSA";
   }
-  if (!form.teacherId) {
-    err.idError = "UserId is required";
+  if (form.teacherContactInfo && !/^\d{10}$/.test(form.teacherContactInfo.trim())) {
+    err.contactError = "Enter a 10-digit contact number";
   }
-  if (!form.teacherPassword) {
-    err.passError = "Password is required";
+  if (form.teacherPassword && !/^(?=.*[A-Z])(?=.*\d).{6,}$/.test(form.teacherPassword)) {
+    err.passError = "Use at least 6 characters, including an uppercase letter and a number";
   }
-  if (!form.teacherContactInfo) {
-    err.contactError = "Contact number is required";
-  }
-  console.log("form errors: ", err);
-
   return err;
 };

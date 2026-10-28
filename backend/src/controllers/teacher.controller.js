@@ -8,6 +8,13 @@ import { capitalize } from "../utils/capitalize.js";
 import { sendEmailVerificationCode } from "../utils/emailOtpToTeacher.js";
 import { Activity } from "../models/recentActivity.model.js";
 
+const teacherCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  path: "/",
+});
+
 const generateAccessAndRefreshTokens = async (teacherId) => {
   const teacher = await Teacher.findById(teacherId);
   if (!teacher)
@@ -200,19 +207,23 @@ const confirmTeacherEmailVerification = asyncHandler(async (req, res) => {
 const loginTeacher = asyncHandler(async (req, res) => {
   const { teacherUsername, teacherEmail, teacherPassword } = req.body;
 
-  if ((!teacherUsername || !teacherEmail) && !teacherPassword) {
+  if ((!teacherUsername && !teacherEmail) || typeof teacherPassword !== "string" || !teacherPassword) {
     throw new ApiError(
       400,
       "Please provide either username or email and the password."
     );
   }
 
-  const teacher = await Teacher.findOne({
-    $or: [{ teacherUsername }, { teacherEmail }],
-  });
+  const identifierQuery = teacherEmail
+    ? { teacherEmail: String(teacherEmail).trim().toLowerCase() }
+    : { teacherUsername: String(teacherUsername).trim().toLowerCase() };
+  const teacher = await Teacher.findOne(identifierQuery).select("+teacherPassword");
 
   if (!teacher) {
-    throw new ApiError(404, "Teacher not found.");
+    throw new ApiError(401, "Invalid credentials.");
+  }
+  if (!teacher.isAuthenticated) {
+    throw new ApiError(403, "Please verify your email address before signing in.");
   }
 
   const isPasswordCorrect = await teacher.isPasswordCorrect(teacherPassword);
@@ -229,16 +240,8 @@ const loginTeacher = asyncHandler(async (req, res) => {
     "-teacherPassword -teacherRefreshToken"
   );
 
-  const accessOption = {
-    httpOnly: true,
-    secure: true,
-    maxAge: (1000 * 60 * 60 * 24 * 1) / 2,
-  };
-  const refreshOption = {
-    httpOnly: true,
-    secure: true,
-    maxAge: 1000 * 60 * 60 * 24 * 2,
-  };
+  const accessOption = { ...teacherCookieOptions(), maxAge: 12 * 60 * 60 * 1000 };
+  const refreshOption = { ...teacherCookieOptions(), maxAge: 2 * 24 * 60 * 60 * 1000 };
 
   return res
     .status(200)
@@ -256,10 +259,7 @@ const logoutTeacher = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+  const options = teacherCookieOptions();
 
   return res
     .status(200)
@@ -308,10 +308,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken: newRefreshToken } =
     await generateAccessAndRefreshTokens(teacher._id);
 
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+  const options = teacherCookieOptions();
 
   return res
     .status(200)
@@ -367,9 +364,15 @@ const getCurrentTeacher = asyncHandler(async (req, res) => {
     new Apiresponse(
       200,
       {
-        teacherId: req?.teacher?._id,
-        teacherFullName: req?.teacher?.teacherFullName,
-        teacherEmail: req?.teacher?.teacherEmail,
+        _id: req.teacher._id,
+        id: req.teacher._id,
+        teacherFullName: req.teacher.teacherFullName,
+        teacherEmail: req.teacher.teacherEmail,
+        teacherUsername: req.teacher.teacherUsername,
+        teacherContactInfo: req.teacher.teacherContactInfo,
+        teacherAvatar: req.teacher.teacherAvatar,
+        teacherGender: req.teacher.teacherGender,
+        teacherAssignedSubjects: req.teacher.teacherAssignedSubjects || [],
       },
       "Current teacher details fetched successfully."
     )
@@ -383,7 +386,7 @@ const updateTeacherDetails = asyncHandler(async (req, res) => {
     teacherUsername,
     teacherId,
     teacherContactInfo,
-    gender,
+    teacherGender,
   } = req.body;
 
   if (
@@ -393,7 +396,7 @@ const updateTeacherDetails = asyncHandler(async (req, res) => {
       teacherUsername ||
       teacherId ||
       teacherContactInfo ||
-      gender
+      teacherGender
     )
   ) {
     throw new ApiError(400, "Please provide at least one field to update.");
@@ -418,8 +421,8 @@ const updateTeacherDetails = asyncHandler(async (req, res) => {
         ...(teacherContactInfo && {
           teacherContactInfo: teacherContactInfo.trim(),
         }),
-        ...(gender && {
-          gender: gender,
+        ...(teacherGender && {
+          teacherGender,
         }),
       },
     },

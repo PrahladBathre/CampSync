@@ -34,22 +34,14 @@ export const registerTeacher = async (formData, file) => {
     return "user register data is empty";
   }
 
-  const teacher = {
-    ...formData,
-    teacherFullName: formData?.teacherFullName,
-    teacherEmail: formData?.teacherEmail,
-    teacherUsername: formData?.teacherUsername,
-    teacherPassword: formData?.teacherPassword,
-    teacherId: formData?.teacherId,
-    teacherContactInfo: formData?.teacherContactInfo,
-    teacherAvatar: file || "",
-  };
-  const fetch = await axios.post("/api/teacher/register", teacher, {
-    headers: {
-      "Content-Type": "multipart/form-data" ,
-    },
+  const payload = new FormData();
+  Object.entries(formData).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) payload.append(key, value);
   });
-  return fetch;
+  if (file) payload.append("teacherAvatar", file);
+  return axios.post("/api/teacher/register", payload, {
+    withCredentials: true,
+  });
 };
 
 // Login teacher
@@ -88,14 +80,10 @@ export const changePassword = async (passwordData) => {
     oldPassword: passwordData?.oldPassword,
     newPassword: passwordData?.newPassword,
   };
-  const passChange = await axios
-    .patch("/api/teacher/change-password", password, {
-      withCredentials: true, // ✅ Important for cookies/session
-    })
-    .then((res) => {
-      res.data;
-    });
-  return passChange;
+  const response = await axios.patch("/api/teacher/change-password", password, {
+    withCredentials: true,
+  });
+  return response.data;
 };
 
 // Get current authenticated teacher
@@ -109,18 +97,15 @@ export const getCurrentTeacher = async () => {
 // Update teacher details
 
 export const updateTeacherDetails = async (updateData) => {
-  const id = updateData?._id || updateData?.id;
-  if (!id) throw new Error("A teacher ID is required to update profile details.");
-  const teacher = {
-    ...updateData,
-    teacherFullName: updateData?.teacherFullName,
-    teacherEmail: updateData?.teacherEmail,
-    teacherUsername: updateData?.teacherUsername,
-    teacherPassword: updateData?.teacherPassword,
-    teacherContactInfo: updateData?.teacherContactInfo,
-    teacherAssignedSubjects: updateData?.teacherAssignedSubjects,
-  };
-  const { _id, ...data } = teacher;
+  const {
+    teacherFullName,
+    teacherEmail,
+    teacherUsername,
+    teacherContactInfo,
+    teacherGender,
+  } = updateData || {};
+  const data = { teacherFullName, teacherEmail, teacherUsername, teacherContactInfo, teacherGender };
+  Object.keys(data).forEach((key) => data[key] === undefined && delete data[key]);
   const update = await axios
     .patch("/api/teacher/update-details", data, { withCredentials: true })
     .then((res) => res.data);
@@ -133,25 +118,15 @@ export const updateTeacherAvatar = async (avatarPic) => {
     ...avatarPic,
     teacherAvatar: avatarPic?.teacherAvatar,
   };
-  const update = await axios
-    .patch(
-      "/api/teacher/update-avatar",
-      picture,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      },
-      {
-        withCredentials: true, // ✅ Important for cookies/session
-      }
-    )
-    .then((res) => {
-      res.data;
-    });
-  return update;
+  const payload = new FormData();
+  if (picture.teacherAvatar) payload.append("avatar", picture.teacherAvatar);
+  const response = await axios.patch("/api/teacher/update-avatar", payload, {
+    withCredentials: true,
+  });
+  return response.data;
 };
 
 export const resendVerificationCode = async (teacherEmail) => {
-  console.log("resendVerificationCode service teacherEmail", teacherEmail);
   const sendCode = await axios.post(
     "/api/teacher/resend-code",
     { teacherEmail: teacherEmail },

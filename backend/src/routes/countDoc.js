@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 import { Teacher } from "../models/teacher.model.js";
 import { Subject } from "../models/subject.model.js";
 import { Student } from "../models/student.model.js";
@@ -8,6 +9,7 @@ import ApiResponse from "../utils/Apiresponse.js";
 import ApiError from "../utils/ApiError.js";
 
 export const countDocuments = Router();
+countDocuments.use(verifyJWT);
 
 countDocuments.get(
   "/v1/count-doc",

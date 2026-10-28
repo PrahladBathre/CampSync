@@ -1,35 +1,36 @@
-# CampSync demo accounts (test database only)
+# CampSync demo accounts
 
-This utility creates one disposable account for each shared-account role: superadmin, admin, teacher, and student. It does **not** create legacy Teacher/Student academic records, and it does not modify an account that already exists.
+## Legacy teacher login (the current login page)
 
-## Safety requirements
+The login screen calls `POST /api/teacher/login`, which authenticates against the `Teacher` collection. The shared-account seeder below creates `Account` documents and is **not** compatible with this form. Use the one-time teacher seeder if you need a demo account for the current login screen.
 
-- Use a dedicated test database such as `campsync_test`; never point this at production.
-- The script ignores the app's `DATABASE` setting and requires `TEST_MONGODB_URI` explicitly.
-- It requires `SEED_DEMO_ACCOUNTS=true` and four separate password environment variables.
-- Existing matching usernames/emails are skipped without changing their password or role.
+### Create a demo teacher in the app's configured database
 
-## Run
+Run this manually from the `backend` directory, only after confirming the configured `DATABASE` and `DB_NAME` point to the intended database. The script does not run at server startup and refuses to run unless explicitly enabled.
 
-From the `backend` directory, create a local `.env.seed` file (do not commit it) with:
+Set these environment variables in a private shell or an untracked env file (never commit passwords):
 
 ```dotenv
-SEED_DEMO_ACCOUNTS=true
-TEST_MONGODB_URI=mongodb+srv://<test-user>:<url-encoded-password>@<cluster>/<campsync_test>?retryWrites=true&w=majority
-DEMO_SUPERADMIN_PASSWORD=<unique-test-password-at-least-12-chars>
-DEMO_ADMIN_PASSWORD=<different-unique-test-password>
-DEMO_TEACHER_PASSWORD=<different-unique-test-password>
-DEMO_STUDENT_PASSWORD=<different-unique-test-password>
+SEED_DEMO_TEACHER=true
+DEMO_TEACHER_PASSWORD=<unique-password-at-least-12-chars-with-uppercase-and-number>
+DEMO_TEACHER_USERNAME=demoteacher
+DEMO_TEACHER_EMAIL=demo.teacher@example.com
+DEMO_TEACHER_ID=UICSADEMO0001
+DEMO_TEACHER_CONTACT=9000000001
 ```
 
-Then run:
+For a local backend whose environment variables are in `backend/env`, run:
 
 ```bash
-node --env-file=.env.seed scripts/seed-demo-accounts.js
+node --env-file=./env scripts/seed-demo-teacher.js
 ```
 
-Save the credentials in your local password manager. This script prints usernames and Mongo IDs only, never passwords. The accounts use the shared `/api/auth/login` contract (`identifier` + `password`); they will not automatically authenticate through the legacy teacher-only login form until that UI is connected to shared auth.
+For a deployed environment, run the script as a one-off job/shell command with the intended database variables and a strong, unique password injected securely. If `NODE_ENV=production`, also set `ALLOW_DEMO_TEACHER_IN_PRODUCTION=true` for that one-off process only. Do not add these seed flags permanently to the web service's environment, and do not use a predictable password on a public service.
 
-## Important
+The script creates one verified legacy `Teacher` record with no assigned subjects. It refuses to overwrite a matching username, email, teacher ID, or contact number. It prints the username/email and record ID but never prints the password. After creation, log in through the existing login form using the configured username and password.
 
-These are test-only identities. Do not use demo passwords on a public production service. Account roles are not a substitute for endpoint authorization: the current app still needs full route-by-route and object-level authorization before exposing privileged roles.
+## Shared-account test seeder
+
+`seed-demo-accounts.js` creates shared `Account` records for test databases only. It requires `TEST_MONGODB_URI`, `SEED_DEMO_ACCOUNTS=true`, and four separate password variables. It intentionally refuses production-like database names and is not compatible with the current legacy teacher login form.
+
+See `seed-demo-accounts.js` for the guarded implementation. Do not use demo credentials on a public production service without an intentional, secured demo-access plan.
