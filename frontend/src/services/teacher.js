@@ -122,7 +122,7 @@ export const updateTeacherDetails = async (updateData) => {
   };
   const { _id, ...data } = teacher;
   const update = await axios
-    .patch(`/api/teacher/update-details/${id}`, data, { withCredentials: true })
+    .patch("/api/teacher/update-details", data, { withCredentials: true })
     .then((res) => res.data);
   return update;
 };
