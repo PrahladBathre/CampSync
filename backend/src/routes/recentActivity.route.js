@@ -1,6 +1,6 @@
-import Router from "express";
+import { Router } from "express";
 import { recentActivityController } from "../controllers/recentActivity.controller.js";
 
 export const recentActivityRoute = Router();
 
-recentActivityRoute.route("/v1/recentactivity", recentActivityController);
+recentActivityRoute.get("/v1/recentactivity", recentActivityController);

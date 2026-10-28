@@ -6,9 +6,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Paper,
   Typography,
-  Box,
   useTheme,
 } from "@mui/material";
 import GlassEffect from "../../components/GlassEffect";
@@ -17,19 +15,22 @@ import { getColorTokens } from "../../theme/theme";
 const RecentActivity = () => {
   const [activities, setActivities] = useState([]);
   const colors = getColorTokens(useTheme().palette.mode);
+
   useEffect(() => {
+    let active = true;
     axios
-      .get("/api//v1/recentactivity")
-      .then((res) => setActivities(res.data))
-      .catch((err) => console.error(err));
+      .get("/api/v1/recentactivity", { withCredentials: true })
+      .then((res) => {
+        if (active) setActivities(Array.isArray(res.data) ? res.data : []);
+      })
+      .catch((err) => console.error("Unable to load recent activity:", err));
+    return () => {
+      active = false;
+    };
   }, []);
 
   return (
-    <GlassEffect
-      sx={{
-        width: "100%",
-      }}
-    >
+    <GlassEffect sx={{ width: "100%" }}>
       <Typography variant="h6" gutterBottom color={colors.text[100]}>
         Recent Activity
       </Typography>
@@ -41,14 +42,21 @@ const RecentActivity = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activities.map((act, i) => (
-            <TableRow key={i}>
+          {activities.map((act) => (
+            <TableRow key={act._id || `${act.date}-${act.message}`}>
               <TableCell sx={{ color: colors.text[100] }}>
-                {new Date(act.date).toLocaleDateString()}
+                {act.date ? new Date(act.date).toLocaleDateString() : "—"}
               </TableCell>
-              <TableCell sx={{ color: "#ccc" }}>{act.message}</TableCell>
+              <TableCell sx={{ color: colors.text[100] }}>{act.message}</TableCell>
             </TableRow>
           ))}
+          {activities.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={2} sx={{ color: colors.text[100] }}>
+                No recent activity yet.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </GlassEffect>
