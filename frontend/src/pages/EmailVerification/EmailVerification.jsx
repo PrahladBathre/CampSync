@@ -27,7 +27,6 @@ const EmailVerification = () => {
   const teach = location.state?.teacherObject;
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
-  const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -36,45 +35,46 @@ const EmailVerification = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const handleSubmit = async (code) => {
     setErrorMsg("");
-    setEmail(teach?.teacherEmail);
     setError(false);
     setLoading(true);
 
     try {
-      const verificationUser = await verificationUserByEmail(email, code);
+      if (!teach?.teacherEmail) {
+        throw new Error("Registration details are missing. Please register again.");
+      }
+      if (!/^\d{6}$/.test(String(code))) {
+        throw new Error("Enter the 6-digit verification code.");
+      }
+      const verificationUser = await verificationUserByEmail(teach.teacherEmail, String(code));
       if (verificationUser?.status === 200) {
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+        setResendMessage("Email verified. Redirecting to sign in…");
+        setTimeout(() => navigate("/login", { replace: true }), 1200);
       }
     } catch (error) {
       setError(true);
       setLoading(false);
-      setErrorMsg(error?.response?.data?.message);
+      setErrorMsg(error?.response?.data?.message || error?.message || "Could not verify your email.");
     }
   };
 
   const handleResend = async () => {
     setErrorMsg("");
+    if (!teach?.teacherEmail || loading || resendCooldown) return;
+    setErrorMsg("");
+    setResendMessage("");
     setResendCooldown(true);
     setLoading(true);
-    console.log("resnd handler", teach?.teacherEmail);
     try {
-      const resendCode = await resendVerificationCode(teach?.teacherEmail);
+      await resendVerificationCode(teach.teacherEmail);
+      setResendMessage("A new verification code has been sent to your email.");
+      setTimeout(() => setResendMessage(""), 5000);
+      setTimeout(() => setResendCooldown(false), 30000);
     } catch (error) {
-      setErrorMsg(error?.response?.data?.message);
-    }
-    setResendMessage("Resending code...");
-    // Simulate API call
-    setTimeout(() => {
-      // Here you’d call your actual API
-      setResendMessage("A new code has been sent to your email.");
-      setTimeout(() => {
-        setResendMessage("");
-        setLoading(false);
-      }, 5000);
+      setErrorMsg(error?.response?.data?.message || "Could not resend the verification code.");
       setResendCooldown(false);
-    }, 2000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -103,9 +103,9 @@ const EmailVerification = () => {
           <Typography variant="h4" gutterBottom>
             Email Verification
           </Typography>
-          <Typography variant="h4" mb={2}>
+          <Typography variant="body1" mb={2}>
             A verification code has been sent to{" "}
-            <strong>{teach?.teacherEmail}</strong>
+            <strong>{teach?.teacherEmail || "your email address"}</strong>
           </Typography>
 
           {/* Input Field */}
@@ -153,11 +153,11 @@ const EmailVerification = () => {
               variant="text"
               fullWidth
               onClick={handleResend}
-              disabled={resendCooldown}
+              disabled={resendCooldown || loading}
             >
               {resendCooldown ? (
                 <Typography variant="h6" color={color.text[100]}>
-                  Please wait... {setTimeout((e) => {}, 15000)}
+                  Please wait before resending
                 </Typography>
               ) : (
                 <Typography variant="h6" color={color.text[100]}>
