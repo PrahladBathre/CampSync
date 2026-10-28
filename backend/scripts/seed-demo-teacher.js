@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "production" && process.env.ALLOW_DEMO_TEACHER_IN_P
   throw new Error("Production seeding requires ALLOW_DEMO_TEACHER_IN_PRODUCTION=true.");
 }
 const password = process.env.DEMO_TEACHER_PASSWORD;
-if (typeof password !== "string" || password.length < 12 || !/[A-Z]/.test(password) || !/\\d/.test(password)) {
+if (typeof password !== "string" || password.length < 12 || !/[A-Z]/.test(password) || !/\d/.test(password)) {
   throw new Error("Set DEMO_TEACHER_PASSWORD to a unique password of at least 12 characters, including an uppercase letter and a number.");
 }
 if (!process.env.DATABASE || !process.env.DB_NAME) {
@@ -23,7 +23,7 @@ const teacherId = process.env.DEMO_TEACHER_ID || "UICSADEMO0001";
 const contact = process.env.DEMO_TEACHER_CONTACT || "9000000001";
 
 try {
-  await mongoose.connect(`${process.env.DATABASE.replace(/\\/$/, "")}/${process.env.DB_NAME}`, { serverSelectionTimeoutMS: 15000 });
+  await mongoose.connect(`${process.env.DATABASE.replace(/\/$/, "")}/${process.env.DB_NAME}`, { serverSelectionTimeoutMS: 15000 });
   const existing = await Teacher.findOne({
     $or: [{ teacherUsername: username }, { teacherEmail: email }, { teacherId }, { teacherContactInfo: contact }],
   });
