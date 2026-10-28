@@ -9,6 +9,7 @@ import {
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const subjectRoutes = Router();
+subjectRoutes.use(verifyJWT);
 
 subjectRoutes.route("/count").get(subjectCount);
 subjectRoutes.route("/").post(addSubject).get(getAllSubjects);
