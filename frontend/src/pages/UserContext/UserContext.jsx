@@ -1,34 +1,25 @@
-/* eslint-disable no-unused-vars */
-import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import { getCurrentTeacher } from "../../services/teacher";
 
-// 1. Create the context
-export const UserContext = createContext();
+export const UserContext = createContext({ user: null, updateUser: () => {}, clearUser: () => {}, loadingUser: true });
 
-// 2. Create the provider component
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
 
-//   useEffect(() => {
-//   axios.get("/api/teacher/user", { withCredentials: true })
-//     .then(res => setUser(res.data.user))  // ✅ only called on app load
-//     .catch(() => setUser(null));
-// }, []);
-  // Update user state with new user data
-  const updateUser = (userData) => {
-    setUser(userData);
-  };
+  useEffect(() => {
+    let active = true;
+    getCurrentTeacher()
+      .then((currentUser) => { if (active && currentUser) setUser(currentUser); })
+      .catch(() => { if (active) setUser(null); })
+      .finally(() => { if (active) setLoadingUser(false); });
+    return () => { active = false; };
+  }, []);
 
-  // Clear user state on logout
-  const clearUser = () => {
-    setUser(null);
-  };
-
-  return (
-    <UserContext.Provider value={{ user, updateUser, clearUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  const updateUser = useCallback((userData) => setUser(userData), []);
+  const clearUser = useCallback(() => setUser(null), []);
+  const value = useMemo(() => ({ user, updateUser, clearUser, loadingUser }), [user, updateUser, clearUser, loadingUser]);
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export default UserProvider;
