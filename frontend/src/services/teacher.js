@@ -101,12 +101,8 @@ export const changePassword = async (passwordData) => {
 // Get current authenticated teacher
 export const getCurrentTeacher = async () => {
   const current = await axios
-    .get("/api/teacher/user", {
-      withCredentials: true, // ✅ Important for cookies/session
-    })
-    .then((res) => {
-      res.data.data;
-    });
+    .get("/api/teacher/user", { withCredentials: true })
+    .then((res) => res.data.data);
   return current;
 };
 
@@ -126,12 +122,8 @@ export const updateTeacherDetails = async (updateData) => {
   };
   const { _id, ...data } = teacher;
   const update = await axios
-    .patch(`/api/teacher/update-details/${id}`, data, {
-      withCredentials: true, // ✅ Important for cookies/session
-    })
-    .then((res) => {
-      res.data;
-    });
+    .patch(`/api/teacher/update-details/${id}`, data, { withCredentials: true })
+    .then((res) => res.data);
   return update;
 };
 
