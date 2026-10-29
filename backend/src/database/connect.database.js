@@ -22,7 +22,7 @@ const connectDB = async () => {
   }
 
   try {
-    const conn = await mongoose.connect(uri, {
+    const conn = await mongoose.connect(`mongodb+srv://Prahlad21:Prahlad21@system0.cgf4duq.mongodb.net/Department`, {
       serverSelectionTimeoutMS: 15000,
     });
 
