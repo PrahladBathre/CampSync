@@ -6,6 +6,7 @@ import {
   resendEmailVerification,
 } from "../controllers/teacher.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
+import { logoutTeacherSession } from "../controllers/logout.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
 
 const teacherRoutes = Router();
@@ -16,7 +17,7 @@ teacherRoutes.route("/register").post(upload.single("teacherAvatar"), registerTe
 teacherRoutes.route("/verifyTeacher").post(confirmTeacherEmailVerification);
 teacherRoutes.route("/resend-code").post(resendEmailVerification);
 teacherRoutes.route("/login").post(loginTeacher);
-teacherRoutes.route("/logout").post(verifyJWT, logoutTeacher);
+teacherRoutes.route("/logout").post(logoutTeacherSession);
 teacherRoutes.route("/change-password").patch(verifyJWT, changePassword);
 teacherRoutes.route("/user").get(verifyJWT, getCurrentTeacher);
 teacherRoutes.route("/update-details").patch(verifyJWT, updateTeacherDetails);
