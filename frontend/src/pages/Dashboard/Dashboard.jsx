@@ -11,7 +11,7 @@ const stats = [
   { key: "teachers", label: "Faculty members", icon: UsersRound, tone: "teal" },
   { key: "students", label: "Enrolled students", icon: GraduationCap, tone: "purple" },
   { key: "courses", label: "Active courses", icon: BookOpen, tone: "blue" },
-  { key: "subjects", label: "Academic subjects", icon: LibraryBig, tone: "amber" },
+  { key: "subjects", label: "Academic subjects", icon: Library, tone: "amber" },
 ];
 
 export default function Dashboard() {
