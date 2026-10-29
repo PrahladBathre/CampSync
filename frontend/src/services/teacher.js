@@ -103,8 +103,6 @@ export const getCurrentTeacher = async () => {
 // Update teacher details
 
 export const updateTeacherDetails = async (updateData) => {
-  const id = updateData?._id || updateData?.id;
-  if (!id) throw new Error("A teacher ID is required to update profile details.");
   const teacher = {
     teacherFullName: updateData?.teacherFullName?.trim(),
     teacherEmail: updateData?.teacherEmail?.trim().toLowerCase(),
