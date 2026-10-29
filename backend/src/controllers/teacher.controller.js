@@ -248,7 +248,11 @@ const loginTeacher = asyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, accessOption)
     .cookie("refreshToken", refreshToken, refreshOption)
     .json(
-      new Apiresponse(200, loggedInTeacher, "Teacher logged in successfully.")
+      new Apiresponse(
+        200,
+        { ...loggedInTeacher.toObject(), accessToken },
+        "Teacher logged in successfully."
+      )
     );
 });
 
