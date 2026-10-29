@@ -280,12 +280,12 @@ export const createCustomTheme = (mode) => {
             backgroundColor: "background.paper",
             color: "text.primary",
             "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader, & .MuiDataGrid-filler": {
-              backgroundColor: "action.hover",
-              color: "text.primary",
+              backgroundColor: mode === "dark" ? "#292532" : "#f6eaf1",
+              color: mode === "dark" ? "#ffffff" : "#302536",
               borderBottom: "1px solid",
               borderColor: "divider",
             },
-            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
+            "& .MuiDataGrid-columnHeaderTitle, & .MuiDataGrid-columnHeaderTitleContainer, & .MuiDataGrid-columnHeader .MuiIconButton-root": { fontWeight: 700, color: mode === "dark" ? "#ffffff !important" : "#302536 !important", opacity: "1 !important" },
             "& .MuiDataGrid-cell": {
               borderBottom: "1px solid",
               borderBottomColor: "divider",
