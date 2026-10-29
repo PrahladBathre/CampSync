@@ -4,14 +4,25 @@
 @import "@fontsource/ibm-plex-sans/700.css";
 
 html, body, #root, .app, .content { height: 100%; width: 100%; font-family: "IBM Plex Sans", sans-serif; font-weight: 400; font-style: normal; }
-body { margin: 0; }
+body { margin: 0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 .app { display: flex; position: relative; overflow-x: hidden; overflow-y: auto; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
 .MuiButton-root, .MuiIconButton-root, .MuiMenuItem-root { transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease; }
 .MuiButton-root:hover, .MuiIconButton-root:hover { transform: translateY(-1px); }
 .MuiButton-root:active, .MuiIconButton-root:active { transform: translateY(0); }
-.MuiPaper-root, .MuiCard-root { border-radius: 12px; }
+.MuiPaper-root, .MuiCard-root { border-radius: 14px; }
+.MuiButton-root { text-transform: none; font-weight: 600; border-radius: 10px; letter-spacing: .005em; }
+.MuiOutlinedInput-root { border-radius: 11px; }
+.MuiTableContainer-root, .MuiDataGrid-root { border: 1px solid rgba(127,127,127,.22) !important; border-radius: 16px !important; overflow: hidden; }
+.MuiTableHead-root .MuiTableCell-root { font-weight: 700; letter-spacing: .025em; }
+.MuiTableBody-root .MuiTableRow-root { transition: background-color 140ms ease; }
+.MuiTableBody-root .MuiTableRow-root:hover { background-color: rgba(203,70,129,.055); }
+.MuiDataGrid-columnHeaders { border-bottom: 1px solid rgba(127,127,127,.24) !important; }
+.MuiDataGrid-columnHeaderTitle { font-weight: 700 !important; }
+.MuiDataGrid-cell { border-bottom-color: rgba(127,127,127,.12) !important; }
+.MuiDataGrid-row:hover { background-color: rgba(203,70,129,.055) !important; }
+.MuiDataGrid-footerContainer { border-top: 1px solid rgba(127,127,127,.18) !important; }
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background-color: #e0e0e0; }
 ::-webkit-scrollbar-thumb { background-color: #555; border-radius: 8px; }
