@@ -25,3 +25,31 @@
 .camp-login-mobile-brand{display:none}
 @media(max-width:850px){.camp-login-shell{grid-template-columns:1fr}.camp-login-story{display:none}.camp-login-main{min-height:100vh;padding:26px 20px}.camp-login-mobile-brand{display:block;margin-bottom:32px}.camp-login-mobile-brand svg{max-width:165px}.camp-login-card{width:min(100%,430px)}}
 @media(max-width:420px){.camp-login-title.MuiTypography-root{font-size:27px}.camp-login-signup{flex-wrap:wrap}}
+
+/* Clear, theme-aligned login fields and accent styling for the email switch */
+.camp-login-card .MuiOutlinedInput-root {
+  background: rgba(127,127,127,.055);
+  color: inherit;
+  border-radius: 12px;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+.camp-login-card .MuiOutlinedInput-root:hover { background: rgba(203,70,129,.055); }
+.camp-login-card .MuiOutlinedInput-root.Mui-focused {
+  background: rgba(203,70,129,.07);
+  box-shadow: 0 0 0 3px rgba(203,70,129,.10);
+}
+.camp-login-card .MuiOutlinedInput-notchedOutline { border-color: rgba(127,127,127,.32); }
+.camp-login-card .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline { border-color: #cb4681; border-width: 1.5px; }
+.camp-login-card .MuiInputLabel-root { color: inherit; opacity: .78; }
+.camp-login-card .MuiInputAdornment-root { color: inherit; opacity: .72; }
+.camp-login-switch.MuiButton-root {
+  color: #cb4681;
+  border: 1px solid rgba(203,70,129,.24);
+  border-radius: 10px;
+  padding: 8px 14px;
+  min-height: 40px;
+  margin-top: 14px;
+}
+.camp-login-switch.MuiButton-root:hover { background: rgba(203,70,129,.09); border-color: #cb4681; }
+.camp-login-submit.MuiButton-root { background: #cb4681; color: #fff; border-radius: 12px; }
+.camp-login-submit.MuiButton-root:hover { background: #af1763; }
