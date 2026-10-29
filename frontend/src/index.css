@@ -40,3 +40,16 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
 ::-webkit-scrollbar-thumb { background-color: #555; border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background-color: #888; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+
+/* Consistent responsive form and navigation surfaces */
+.MuiTextField-root .MuiOutlinedInput-root { border-radius: 12px; }
+.MuiDialogTitle-root { font-weight: 700; letter-spacing: -.02em; }
+.MuiFormControlLabel-label { font-size: .92rem; }
+.pro-sidebar .pro-menu-item { border-radius: 11px; }
+.pro-sidebar .pro-menu-item .pro-inner-item { min-height: 44px; }
+.pro-sidebar .pro-menu-item.active { border: 1px solid rgba(203,70,129,.24); }
+.camp-stat-icon svg { width: 23px; height: 23px; stroke-width: 1.8; }
+@media (max-width: 600px) {
+  .MuiDialog-paper { margin: 12px !important; width: calc(100% - 24px) !important; }
+  .MuiTableContainer-root { max-width: 100%; }
+}
