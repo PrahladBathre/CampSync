@@ -364,6 +364,74 @@ export const createCustomTheme = (mode) => {
             background: colors.gradient[100],
             color: colors.text[100],
             border: `1px solid ${colors.grey[600]}`,
+            borderRadius: 16,
+            backgroundImage: "none",
+          },
+        },
+      },
+      MuiButton: {
+        defaultProps: { disableElevation: true },
+        styleOverrides: {
+          root: {
+            minHeight: 40,
+            borderRadius: 10,
+            padding: "9px 16px",
+            textTransform: "none",
+            fontWeight: 650,
+            letterSpacing: 0,
+            lineHeight: 1.25,
+            whiteSpace: "normal",
+            transition: "background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease",
+          },
+          containedPrimary: {
+            color: mode === "dark" ? colors.text[100] : "#fff",
+            backgroundColor: colors.secondary[500],
+            "&:hover": { backgroundColor: colors.secondary[600], boxShadow: "0 5px 14px rgba(0,0,0,.16)" },
+            "&.Mui-disabled": { color: colors.text[300], backgroundColor: colors.grey[700] },
+          },
+          outlined: {
+            borderColor: colors.grey[500],
+            "&:hover": { borderColor: colors.secondary[500], backgroundColor: mode === "dark" ? "rgba(225,119,161,.12)" : "rgba(203,70,129,.07)" },
+          },
+          text: {
+            "&:hover": { backgroundColor: mode === "dark" ? "rgba(225,119,161,.12)" : "rgba(203,70,129,.07)" },
+          },
+        },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: 10,
+            transition: "background-color 160ms ease, color 160ms ease",
+            "&:hover": { backgroundColor: mode === "dark" ? "rgba(225,119,161,.14)" : "rgba(203,70,129,.09)" },
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: 16,
+            border: `1px solid ${colors.grey[600]}`,
+            boxShadow: mode === "dark" ? "0 12px 32px rgba(0,0,0,.22)" : "0 12px 32px rgba(35,25,45,.07)",
+          },
+        },
+      },
+      MuiDataGrid: {
+        styleOverrides: {
+          root: {
+            borderRadius: 14,
+            borderColor: colors.grey[600],
+            color: colors.text[100],
+            backgroundColor: mode === "dark" ? "rgba(19,16,24,.82)" : "rgba(255,255,255,.9)",
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: mode === "dark" ? "rgba(203,70,129,.16)" : "rgba(203,70,129,.09)",
+              borderBottom: `1px solid ${colors.grey[600]}`,
+            },
+            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
+            "& .MuiDataGrid-cell": { borderBottomColor: colors.grey[700] },
+            "& .MuiDataGrid-row:hover": { backgroundColor: mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.05)" },
+            "& .MuiDataGrid-footerContainer": { borderTop: `1px solid ${colors.grey[600]}` },
+            "& .MuiDataGrid-scrollbarFiller, & .MuiDataGrid-filler": { backgroundColor: "transparent" },
           },
         },
       },
