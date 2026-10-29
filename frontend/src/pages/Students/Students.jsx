@@ -27,6 +27,7 @@ import validateStudentForm from "./utils/validateStudentForm.js"; // Ensure this
 import {
   deleteStudent,
   filterStudent,
+  getStudents,
   studentRegister,
   updateStudentDetails,
 } from "../../services/student.js";
@@ -78,34 +79,36 @@ const Students = () => {
 
   // ⭐ Fetch students
 
-  const [isfetchError, setIsFetchError] = useState(""); // Changed to null or object, not string
+  const [isfetchError, setIsFetchError] = useState("");
+  const [isStudentsLoading, setIsStudentsLoading] = useState(true);
   const [students, setStudents] = useState([]);
-  const fetchStudents = useCallback(
-    async (filterData) => {
-      try {
-        // Decide whether to filter or get all students based on courseIdToFilter
-        const data = await filterStudent(filterData).then(
-          (res) => res?.data?.data
-        );
+  const fetchStudents = useCallback(async (filters = {}) => {
+    setIsStudentsLoading(true);
+    setIsFetchError("");
+    try {
+      const hasFilters = Boolean(filters?.studentCurrentCourseId || filters?.studentCurrentSemester);
+      const response = hasFilters ? await filterStudent(filters) : await getStudents();
+      const records = Array.isArray(response) ? response : response?.data?.data ?? response?.data ?? [];
+      if (!Array.isArray(records)) throw new Error("The student API returned an unexpected response.");
+      setStudents(records.map((student, i) => ({
+        ...student,
+        id: student._id || i,
+        index: i + 1,
+        city: student.studentAddress?.city || "",
+        state: student.studentAddress?.state || "",
+        country: student.studentAddress?.country || "",
+        postalCode: student.studentAddress?.postalCode || "",
+      })));
+    } catch (error) {
+      setIsFetchError(error?.response?.data?.message || error?.message || "Student records could not be loaded. Please sign in again and retry.");
+    } finally {
+      setIsStudentsLoading(false);
+    }
+  }, []);
 
-        const mappedRows = data.map((student, i) => ({
-          ...student,
-          id: student._id || i, // Ensure a unique ID for DataGrid
-          index: i + 1,
-          // Flatten address properties for direct column access if needed
-          city: student.studentAddress?.city || "",
-          state: student.studentAddress?.state || "",
-          country: student.studentAddress?.country || "",
-          postalCode: student.studentAddress?.postalCode || "",
-        }));
-        setStudents(mappedRows);
-        setIsFetchError(""); // Clear any previous fetch errors
-      } catch (error) {
-        setIsFetchError(error?.response?.data?.message); // Store the full error object for potential debugging
-      }
-    },
-    [] // No dependency on students, so it doesn't re-create unnecessarily
-  );
+  useEffect(() => {
+    fetchStudents(filterData);
+  }, [fetchStudents, refreshTable]);
 
   // Register Dialog open/close handlers
   const openRegisterDialog = () => {
@@ -469,7 +472,7 @@ const Students = () => {
             </Typography>
           </Button>
           <Button
-            onClick={() => setFilterData({})}
+            onClick={() => { setFilterData({}); fetchStudents({}); }}
             sx={{
               display: "flex",
               gap: 1,
@@ -491,13 +494,13 @@ const Students = () => {
         </Box>
 
         {/* DataGrid */}
+        {isfetchError && <Alert severity="error" sx={{ mb: 2 }}>{isfetchError}</Alert>}
         <GridWrapper
-          sx={{
-            width: "90vw",
-          }}
+          sx={{ width: "90vw" }}
           rows={students}
           columns={columns}
-          isDatafetched={!isfetchError}
+          loading={isStudentsLoading}
+          isDatafetched={!isStudentsLoading && !isfetchError}
         />
       </PageSectionWrapper>
 
