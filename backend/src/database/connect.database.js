@@ -7,7 +7,7 @@ const app = express();
 
 const connectDB = async () => {
   const database = process.env.DATABASE;
-  const db_name = process.env.DB_NAME;
+  const db_name =DB_NAME;
   const db_user = process.env.DB_ID
   const db_pass = process.env.DB_PASSWORD
   console.log(database,db_name,db_user ,db_pass)
