@@ -53,3 +53,28 @@
 .camp-login-switch.MuiButton-root:hover { background: rgba(203,70,129,.09); border-color: #cb4681; }
 .camp-login-submit.MuiButton-root { background: #cb4681; color: #fff; border-radius: 12px; }
 .camp-login-submit.MuiButton-root:hover { background: #af1763; }
+
+/* Keep the login method switch visible above shared button styles. */
+.camp-login-card .camp-login-switch.MuiButton-root {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  align-self: center;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  min-height: 42px;
+  color: #a8175e !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(168,23,94,.48) !important;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
+  text-align: center;
+}
+.camp-login-card .camp-login-switch.MuiButton-root:hover {
+  color: #861047 !important;
+  background-color: rgba(203,70,129,.10) !important;
+  border-color: #a8175e !important;
+}
