@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  registerTeacher, loginTeacher, logoutTeacher, refreshAccessToken,
+  registerTeacher, loginTeacher, refreshAccessToken,
   changePassword, getCurrentTeacher, updateTeacherDetails, updateTeacherAvatar,
   getTeacherById, getAllTeachers, teacherCount, confirmTeacherEmailVerification,
   resendEmailVerification,
