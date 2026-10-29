@@ -122,9 +122,9 @@ const Attendance = () => {
       <PageSectionWrapper>
         {/* Header and Add Student Button */}
         <GridHeaderWithAction
-          pageTitle={`Attendance Monitoring System`}
+          pageTitle={`Attendance Records`}
           // onButtonClick={openRegisterDialog}
-          buttonLabel={"Register student"}
+          buttonLabel={"Record attendance"}
         />
         {/* filter list*/}
         <Box
@@ -197,7 +197,7 @@ const Attendance = () => {
                     },
                   }}
                   defaultValue={dayjs(new Date())}
-                  label="Basic date picker"
+                  label="Attendance date"
                   onChange={(e) =>
                     console.log(dayjs(e.$d).format("YYYY/MM/DD"))
                   }
@@ -229,7 +229,7 @@ const Attendance = () => {
               }}
             >
               {" "}
-              {"Search"}
+              {"Apply filters"}
             </Typography>
           </Button>
           <Button
@@ -249,7 +249,7 @@ const Attendance = () => {
               }}
             >
               {" "}
-              {"Clear"}
+              {"Reset filters"}
             </Typography>
           </Button>
         </Box>{" "}
