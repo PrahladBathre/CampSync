@@ -28,30 +28,24 @@ export const getTeacherById = async (teacherId) => {
   return getTeacher;
 };
 
-// Register a new teacher (with avatar upload)
+// Register a teacher with the exact multipart field expected by the upload middleware.
 export const registerTeacher = async (formData, file) => {
-  if (!formData) {
-    return "user register data is empty";
-  }
-
+  if (!formData) throw new Error("Registration data is required.");
   const teacher = {
     ...formData,
-    teacherFullName: formData?.teacherFullName,
-    teacherEmail: formData?.teacherEmail,
-    teacherUsername: formData?.teacherUsername,
-    teacherPassword: formData?.teacherPassword,
-    teacherId: formData?.teacherId,
-    teacherContactInfo: formData?.teacherContactInfo,
-    teacherAvatar: file || "",
+    teacherFullName: formData.teacherFullName?.trim(),
+    teacherEmail: formData.teacherEmail?.trim().toLowerCase(),
+    teacherUsername: formData.teacherUsername?.trim().toLowerCase(),
+    teacherId: formData.teacherId?.trim(),
+    teacherContactInfo: formData.teacherContactInfo?.trim(),
   };
-  const fetch = await axios.post("/api/teacher/register", teacher, {
-    headers: {
-      "Content-Type": "multipart/form-data" ,
-    },
+  const payload = new FormData();
+  Object.entries(teacher).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) payload.append(key, String(value));
   });
-  return fetch;
+  if (file) payload.append("teacherAvatar", file);
+  return axios.post("/api/teacher/register", payload, { withCredentials: true });
 };
-
 // Login teacher
 export const loginTeacher = async (teacher) => {
   const login = await axios.post("/api/teacher/login", teacher, {
@@ -112,19 +106,13 @@ export const updateTeacherDetails = async (updateData) => {
   const id = updateData?._id || updateData?.id;
   if (!id) throw new Error("A teacher ID is required to update profile details.");
   const teacher = {
-    ...updateData,
-    teacherFullName: updateData?.teacherFullName,
-    teacherEmail: updateData?.teacherEmail,
-    teacherUsername: updateData?.teacherUsername,
-    teacherPassword: updateData?.teacherPassword,
-    teacherContactInfo: updateData?.teacherContactInfo,
-    teacherAssignedSubjects: updateData?.teacherAssignedSubjects,
+    teacherFullName: updateData?.teacherFullName?.trim(),
+    teacherEmail: updateData?.teacherEmail?.trim().toLowerCase(),
+    teacherUsername: updateData?.teacherUsername?.trim().toLowerCase(),
+    teacherContactInfo: updateData?.teacherContactInfo?.trim(),
   };
-  const { _id, ...data } = teacher;
-  const update = await axios
-    .patch("/api/teacher/update-details", data, { withCredentials: true })
-    .then((res) => res.data);
-  return update;
+  const data = Object.fromEntries(Object.entries(teacher).filter(([, value]) => value !== undefined && value !== ""));
+  return axios.patch("/api/teacher/update-details", data, { withCredentials: true });
 };
 
 // Update teacher avatar
