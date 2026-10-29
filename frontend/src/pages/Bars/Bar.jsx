@@ -3,17 +3,7 @@ import React, { useContext, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
-import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
-import SupervisorAccountOutlinedIcon from "@mui/icons-material/SupervisorAccountOutlined";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MenuOpenOutlinedIcon from "@mui/icons-material/MenuOpenOutlined";
-import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import StackedLineChartOutlinedIcon from "@mui/icons-material/StackedLineChartOutlined";
+import { GraduationCap, BookOpen, Shapes, UsersRound, ClipboardCheck, Menu, PanelLeftClose, LayoutDashboard, ChartColumn, ChartPie, ChartNoAxesCombined } from "lucide-react";
 import { getColorTokens } from "../../theme/theme.js";
 import "react-pro-sidebar/dist/css/styles.css";
 import { UserContext } from "../UserContext/UserContext.jsx";
@@ -52,7 +42,10 @@ const Bar = () => {
           transition: "width 0.3s ease",
         },
         "& .pro-sidebar-inner": {
-          borderRadius: "0 4px 4px 0",
+          borderRadius: "0 18px 18px 0",
+          border: "1px solid rgba(127,127,127,.18)",
+          backdropFilter: "blur(18px)",
+          boxShadow: "8px 0 36px rgba(0,0,0,.06)",
           background: `${colors.gradient[100]} !important`,
         },
         "& .pro-icon-wrapper": {
@@ -67,7 +60,7 @@ const Bar = () => {
           backgroundColor: "rgba(255, 255, 255, 0.2)",
           backdropFilter: "blur(8px)",
           border: "1px solid rgba(255, 255, 255, 0.3)",
-          borderRadius: "4px",
+          borderRadius: "10px",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
           color: colors.text[100],
           margin: "1px",
@@ -80,7 +73,7 @@ const Bar = () => {
       <ProSidebar collapsed={collapsed}>
         <Menu iconShape="square">
           <MenuItem
-            icon={collapsed ? <MenuOutlinedIcon /> : <MenuOpenOutlinedIcon />}
+            icon={collapsed ? <Menu size={20} /> : <PanelLeftClose size={20} />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
               width: "10px",
@@ -91,7 +84,7 @@ const Bar = () => {
             <SidebarItem
               title="Dashboard"
               to="/"
-              icon={<WidgetsOutlinedIcon />}
+              icon={<LayoutDashboard size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -109,35 +102,35 @@ const Bar = () => {
             <SidebarItem
               title="Student"
               to="/student"
-              icon={<SchoolOutlinedIcon />}
+              icon={<GraduationCap size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Course"
               to="/course"
-              icon={<LibraryBooksOutlinedIcon />}
+              icon={<BookOpen size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Subject"
               to="/subject"
-              icon={<CategoryOutlinedIcon />}
+              icon={<Shapes size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Teacher"
               to="/teacher"
-              icon={<SupervisorAccountOutlinedIcon />}
+              icon={<UsersRound size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Attendance"
               to="/attendance"
-              icon={<HowToRegOutlinedIcon />}
+              icon={<ClipboardCheck size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -155,21 +148,21 @@ const Bar = () => {
             <SidebarItem
               title="Bar"
               to="/barchart"
-              icon={<BarChartOutlinedIcon />}
+              icon={<ChartColumn size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Pie"
               to="/piechart"
-              icon={<PieChartOutlineOutlinedIcon />}
+              icon={<ChartPie size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Line"
               to="/linechart"
-              icon={<StackedLineChartOutlinedIcon />}
+              icon={<ChartNoAxesCombined size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
