@@ -1,5 +1,4 @@
-import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
-import { AddIcon } from "../utils/icons.js";
+import { Box, Typography, Button, useTheme } from "@mui/material";
 import { getColorTokens } from "../theme/theme.js";
 import PageHeading from "./PageHeading.jsx";
 import GlassEffect from "./GlassEffect.jsx";
@@ -14,54 +13,45 @@ const GridHeaderWithAction = ({
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: { xs: "column", sm: "row" },
+        alignItems: { xs: "stretch", sm: "flex-end" },
+        justifyContent: "space-between",
+        gap: 2,
+        mb: 2,
       }}
     >
-      <PageHeading>{pageTitle}</PageHeading>
+      <Box sx={{ flex: 1, minWidth: 0 }}><PageHeading>{pageTitle}</PageHeading></Box>
       <Box
-        sx={{
-          justifyItems: {
-            xs: "center",
-            sm: "right",
-          },
-        }}
+        sx={{ display: "flex", justifyContent: { xs: "stretch", sm: "flex-end" }, width: { xs: "100%", sm: "auto" } }}
       >
         {onButtonClick && (
           <Button
             onClick={onButtonClick}
             sx={{
-              color: colors.text[100],
-              background: colors.gradient[100],
-              "& :hover": {
-                background: "transparent",
-              },
+              color: "primary.contrastText",
+              background: "primary.main",
+              "&:hover": { background: "primary.dark", boxShadow: "0 8px 20px rgba(0,0,0,.12)" },
               display: "flex",
               alignItems: "center",
-              borderRadius: "4px",
+              justifyContent: "center",
+              borderRadius: 2.5,
+              minHeight: 44,
+              px: 2,
+              py: 0.5,
+              textTransform: "none",
+              fontWeight: 650,
+              boxShadow: "none",
               ...buttonSx,
               m: 0,
-              p: 0,
             }}
           >
             <GlassEffect
-              sx={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "4px",
-                m: 0,
-                px: 2,
-                py:1
-              }}
+              sx={{ width: "100%", height: "100%", borderRadius: 2.5, m: 0, px: 0, py: 0, background: "transparent" }}
             >
               {/* <AddIcon color="inherit" /> */}
               <Typography
-                variant="h6"
-                sx={{
-                  color: colors.text[100],
-                  // lineHeight: 1,
-                  fontWeight: 500,
-                  letterSpacing: 1,
-                }}
+                variant="body1"
+                sx={{ color: "inherit", fontWeight: 650, letterSpacing: 0, whiteSpace: "nowrap" }}
               >
                 {buttonLabel}
               </Typography>
