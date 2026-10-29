@@ -12,6 +12,18 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
 .MuiButton-root:hover, .MuiIconButton-root:hover { transform: translateY(-1px); }
 .MuiButton-root:active, .MuiIconButton-root:active { transform: translateY(0); }
 .MuiPaper-root, .MuiCard-root { border-radius: 14px; }
+.MuiCard-root { border: 1px solid rgba(127,127,127,.18); box-shadow: 0 12px 32px rgba(0,0,0,.06); }
+.MuiPaper-elevation1, .MuiPaper-elevation2, .MuiPaper-elevation3 { box-shadow: 0 12px 34px rgba(0,0,0,.08); }
+.MuiMenu-paper, .MuiPopover-paper, .MuiAutocomplete-paper { border: 1px solid rgba(203,70,129,.2); backdrop-filter: blur(22px); }
+.MuiIconButton-root { border-radius: 10px; }
+.MuiButton-outlined { border-color: rgba(203,70,129,.35); }
+.MuiButton-outlined:hover { border-color: rgba(203,70,129,.7); background-color: rgba(203,70,129,.07); }
+.MuiFormLabel-root { font-weight: 500; }
+.MuiOutlinedInput-notchedOutline { border-color: rgba(127,127,127,.32); }
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline { border-color: rgba(203,70,129,.55); }
+.MuiDialog-paper { border: 1px solid rgba(203,70,129,.22); backdrop-filter: blur(22px); }
+.MuiAlert-root { border-radius: 12px; }
+.MuiChip-root { border-radius: 9px; font-weight: 600; }
 .MuiButton-root { text-transform: none; font-weight: 600; border-radius: 10px; letter-spacing: .005em; }
 .MuiOutlinedInput-root { border-radius: 11px; }
 .MuiTableContainer-root, .MuiDataGrid-root { border: 1px solid rgba(127,127,127,.22) !important; border-radius: 16px !important; overflow: hidden; }
