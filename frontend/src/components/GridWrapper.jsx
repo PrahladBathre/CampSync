@@ -3,7 +3,7 @@ import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import { Sparkles } from "lucide-react";
 import { getColorTokens } from "../theme/theme";
 
-const GridWrapper = ({ columns, rows, isDatafetched }) => {
+const GridWrapper = ({ columns, rows, isDatafetched, loading }) => {
   const apiRef = useGridApiRef();
   const theme = useTheme();
   const colors = getColorTokens(theme.palette.mode);
@@ -38,7 +38,7 @@ const GridWrapper = ({ columns, rows, isDatafetched }) => {
                  apiRef={apiRef}
           rows={rows}
           columns={flexibleColumns}
-          loading={!isDatafetched}
+          loading={loading ?? !isDatafetched}
           disableColumnSelector
           disableRowSelectionOnClick
           disableColumnResize
