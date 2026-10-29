@@ -257,9 +257,9 @@ const Subjects = () => {
     <Box width="100%">
       <PageSectionWrapper>
         <GridHeaderWithAction
-          pageTitle={"Subject Records"}
+          pageTitle={"Subject Directory"}
           onButtonClick={openRegisterDialog}
-          buttonLabel={"Add Subject"}
+          buttonLabel={"Add subject"}
         />
         <GridWrapper
           isDatafetched={isDataFetched}
@@ -394,7 +394,7 @@ const Subjects = () => {
                     disabled={registerLoading}
                   >
                     <Typography variant="h5">
-                      {registerLoading ? "Registering..." : "Register"}
+                      {registerLoading ? "Saving subject…" : "Create subject"}
                     </Typography>
                   </Button>
                 </DialogActions>
@@ -516,7 +516,7 @@ const Subjects = () => {
                   disabled={updateLoading}
                 >
                   <Typography variant="h5">
-                    {updateLoading ? "Updating..." : "Update"}
+                    {updateLoading ? "Saving changes…" : "Save changes"}
                   </Typography>
                 </Button>
               </Box>
@@ -532,7 +532,7 @@ const Subjects = () => {
             sx={{ height: "46vh" }}
             isDialogOpen={isDeleteDialogOpen}
             closeDialog={closeDeleteDialog}
-            dialogHeading={"Remove Subject"}
+            dialogHeading={"Delete subject"}
           >
             <DeleteConfirmationDialogContent
               onConfirm={() => handleDeleteSubject(selectedSubject)}
