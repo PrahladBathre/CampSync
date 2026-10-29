@@ -388,7 +388,7 @@ const Students = () => {
       <PageSectionWrapper>
         {/* Header and Add Student Button */}
         <GridHeaderWithAction
-          pageTitle={`Enrolled Students`}
+          pageTitle={`Student Directory`}
           onButtonClick={openRegisterDialog}
           buttonLabel={"Register student"}
         />
