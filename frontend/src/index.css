@@ -100,3 +100,30 @@ html:has(.page-content)::-webkit-scrollbar, body:has(.page-content)::-webkit-scr
   .MuiDialogActions-root .MuiButton-root { flex: 1 1 auto; }
   .MuiFormControl-root, .MuiTextField-root { max-width: 100%; }
 }
+
+/* Last-resort contrast guard for DataGrid headers across every page. */
+.MuiDataGrid-columnHeaders,
+.MuiDataGrid-columnHeader,
+.MuiDataGrid-filler,
+.MuiDataGrid-scrollbarFiller--header {
+  background-color: #f6eaf1 !important;
+}
+.MuiDataGrid-columnHeader,
+.MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderTitle,
+.MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderTitleContainer,
+.MuiDataGrid-columnHeader .MuiIconButton-root,
+.MuiDataGrid-columnHeader .MuiSvgIcon-root {
+  color: #302536 !important;
+  opacity: 1 !important;
+}
+@media (prefers-color-scheme: dark) {
+  .MuiDataGrid-columnHeaders,
+  .MuiDataGrid-columnHeader,
+  .MuiDataGrid-filler,
+  .MuiDataGrid-scrollbarFiller--header { background-color: #292532 !important; }
+  .MuiDataGrid-columnHeader,
+  .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderTitle,
+  .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderTitleContainer,
+  .MuiDataGrid-columnHeader .MuiIconButton-root,
+  .MuiDataGrid-columnHeader .MuiSvgIcon-root { color: #ffffff !important; }
+}
