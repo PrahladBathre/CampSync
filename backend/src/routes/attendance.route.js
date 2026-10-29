@@ -10,6 +10,7 @@ import {
 const attendanceRoutes = Router();
 
 attendanceRoutes.route("/count").get(attendanceCount); // get attendance count
+attendanceRoutes.route("/insights").get(attendanceCount); // attendance status and daily trend insights
 
 attendanceRoutes.route("/").post(addAttendance); //add a new attendance record
 attendanceRoutes
