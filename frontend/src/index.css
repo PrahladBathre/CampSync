@@ -53,3 +53,34 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
   .MuiDialog-paper { margin: 12px !important; width: calc(100% - 24px) !important; }
   .MuiTableContainer-root { max-width: 100%; }
 }
+
+/* Consistent action controls across directory, forms, filters and dialogs */
+.MuiButton-root {
+  min-height: 40px;
+  border-radius: 10px;
+  padding-inline: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.MuiButton-contained {
+  box-shadow: none;
+}
+.MuiButton-contained:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+}
+.MuiButton-outlined {
+  border-color: rgba(127,127,127,.35);
+}
+.MuiTextField-root .MuiOutlinedInput-root,
+.MuiFormControl-root .MuiOutlinedInput-root {
+  border-radius: 10px;
+}
+.MuiDialogActions-root {
+  gap: 8px;
+  padding: 16px 24px 20px;
+}
+.MuiDataGrid-root {
+  border-radius: 14px;
+  overflow: hidden;
+}
