@@ -149,24 +149,24 @@ const Bar = () => {
                 color: colors.text[100],
               }}
             >
-              Insight
+              Insights
             </Typography>
             <SidebarItem
-              title="Bar"
+              title="Record totals"
               to="/barchart"
               icon={<BarChart3 size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
-              title="Pie"
+              title="Attendance status"
               to="/piechart"
               icon={<PieChart size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
-              title="Line"
+              title="Attendance trends"
               to="/linechart"
               icon={<LineChart size={19} />}
               selected={selected}
