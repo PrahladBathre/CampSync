@@ -30,7 +30,11 @@ export default function Login() {
     try {
       const logged = await loginTeacher(credentials);
       if (logged?.status === 200) {
-        updateUser(logged.data.data);
+        const { accessToken, ...teacherProfile } = logged.data.data || {};
+        if (accessToken) {
+          try { sessionStorage.setItem("campSyncAccessToken", accessToken); } catch {}
+        }
+        updateUser(teacherProfile);
         navigate("/");
       }
     } catch (e) {
