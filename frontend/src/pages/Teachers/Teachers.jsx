@@ -81,7 +81,7 @@ const Teachers = () => {
         <GridHeaderWithAction pageTitle={"Faculty Directory"} />
         <Typography color="text.secondary" sx={{ mb: 2 }}>View faculty profiles, contact details, and assigned subjects in one place.</Typography>
         {errorMessage && <Alert severity="error" sx={{ mb: 2 }}>{errorMessage}</Alert>}
-        {loading && teachers.length === 0 && <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}><CircularProgress size={18} /><Typography variant="body2" color="text.secondary">Loading faculty records…</Typography></Box>
+        {loading && teachers.length === 0 && <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}><CircularProgress size={18} /><Typography variant="body2" color="text.secondary">Loading faculty records…</Typography></Box>}
         <GridWrapper columns={columns} rows={teachers} loading={loading} isDatafetched={!loading && !errorMessage} />
       </PageSectionWrapper>
     </Box>
