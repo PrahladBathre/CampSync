@@ -9,6 +9,19 @@ import axios from "axios";
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
+const getSessionAccessToken = () => {
+  try { return sessionStorage.getItem("campSyncAccessToken"); } catch { return null; }
+};
+
+axios.interceptors.request.use((request) => {
+  const accessToken = getSessionAccessToken();
+  if (accessToken) {
+    request.headers = request.headers || {};
+    request.headers.Authorization = "Bearer " + accessToken;
+  }
+  return request;
+});
+
 // Recover an expired access cookie through the refresh cookie and retry once.
 let refreshInFlight = null;
 axios.interceptors.response.use(
@@ -29,6 +42,7 @@ axios.interceptors.response.use(
       const refreshed = await refreshInFlight;
       const accessToken = refreshed?.data?.data?.accessToken;
       if (accessToken) {
+        try { sessionStorage.setItem("campSyncAccessToken", accessToken); } catch {}
         request.headers = request.headers || {};
         request.headers.Authorization = "Bearer " + accessToken;
       }
