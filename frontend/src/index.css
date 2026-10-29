@@ -85,6 +85,8 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
 
 /* Avoid nested, competing scrollbars and keep all screens usable. */
 body { overflow-x: hidden; }
+html:has(.page-content), body:has(.page-content) { scrollbar-width: none; -ms-overflow-style: none; }
+html:has(.page-content)::-webkit-scrollbar, body:has(.page-content)::-webkit-scrollbar { display: none; }
 @media (max-width: 900px) {
   .content { margin-left: 0 !important; }
   .pro-sidebar-rootStyles { max-width: 100vw; }
