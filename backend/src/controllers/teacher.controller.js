@@ -232,11 +232,15 @@ const loginTeacher = asyncHandler(async (req, res) => {
   const accessOption = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
+    path: "/",
     maxAge: (1000 * 60 * 60 * 24 * 1) / 2,
   };
   const refreshOption = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
+    path: "/",
     maxAge: 1000 * 60 * 60 * 24 * 2,
   };
 
@@ -311,6 +315,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
+    path: "/",
   };
 
   return res
