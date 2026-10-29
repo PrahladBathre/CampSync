@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Alert, Box, Button, CircularProgress, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import { GraduationCap, Mail, UserRound, LockKeyhole, ArrowRight } from "lucide-react";
 import { loginTeacher } from "../../services/teacher";
 import LogoSync from "../../components/LogoSync";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +23,10 @@ export default function Login() {
     if (loading) return;
     setError("");
     setLoading(true);
+    const identifier = (isEmailLogin ? user.teacherEmail : user.teacherUsername).trim();
     const credentials = isEmailLogin
-      ? { teacherEmail: user.teacherEmail.trim(), teacherUsername: null, teacherPassword: user.teacherPassword }
-      : { teacherEmail: null, teacherUsername: user.teacherUsername.trim(), teacherPassword: user.teacherPassword };
+      ? { teacherEmail: identifier, teacherPassword: user.teacherPassword }
+      : { teacherUsername: identifier, teacherPassword: user.teacherPassword };
     try {
       const logged = await loginTeacher(credentials);
       if (logged?.status === 200) {
@@ -55,15 +56,15 @@ export default function Login() {
     <Box className="camp-login-main">
       <Box className="camp-login-mobile-brand"><LogoSync /></Box>
       <Box component="form" className="camp-login-card" onSubmit={handlerLogin}>
-        <Box className="camp-login-icon"><SchoolRoundedIcon /></Box>
+        <Box className="camp-login-icon"><GraduationCap size={25} strokeWidth={1.8} /></Box>
         <Typography component="h2" className="camp-login-title">Welcome back</Typography>
         <Typography className="camp-login-subtitle">Sign in to continue to your workspace.</Typography>
         {error && <Alert severity="error" sx={{mt:2,mb:1}} role="alert">{error}</Alert>}
         <Box className="camp-login-fields">
-          <TextField fullWidth label={isEmailLogin ? "Email address" : "Username"} name={isEmailLogin ? "teacherEmail" : "teacherUsername"} autoComplete={isEmailLogin ? "email" : "username"} required value={isEmailLogin ? user.teacherEmail : user.teacherUsername} onChange={(e)=>setUser({...user,[e.target.name]:e.target.value})} inputProps={{"aria-label":isEmailLogin ? "Email address" : "Username"}} />
-          <TextField fullWidth label="Password" name="teacherPassword" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={user.teacherPassword} onChange={(e)=>setUser({...user,teacherPassword:e.target.value})} inputProps={{"aria-label":"Password"}} InputProps={{endAdornment:<InputAdornment position="end"><IconButton aria-label={showPassword ? "Hide password" : "Show password"} onClick={()=>setShowPassword(v=>!v)} edge="end">{showPassword ? <VisibilityOffOutlinedIcon/> : <VisibilityOutlinedIcon/>}</IconButton></InputAdornment>}} />
+          <TextField fullWidth label={isEmailLogin ? "Email address" : "Username"} name={isEmailLogin ? "teacherEmail" : "teacherUsername"} autoComplete={isEmailLogin ? "email" : "username"} required value={isEmailLogin ? user.teacherEmail : user.teacherUsername} onChange={(e)=>setUser({...user,[e.target.name]:e.target.value})} InputProps={{startAdornment:<InputAdornment position="start">{isEmailLogin?<Mail size={18}/>:<UserRound size={18}/>}</InputAdornment>}} inputProps={{"aria-label":isEmailLogin ? "Email address" : "Username"}} />
+          <TextField fullWidth label="Password" name="teacherPassword" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={user.teacherPassword} onChange={(e)=>setUser({...user,teacherPassword:e.target.value})} inputProps={{"aria-label":"Password"}} InputProps={{startAdornment:<InputAdornment position="start"><LockKeyhole size={18}/></InputAdornment>,endAdornment:<InputAdornment position="end"><IconButton aria-label={showPassword ? "Hide password" : "Show password"} onClick={()=>setShowPassword(v=>!v)} edge="end">{showPassword ? <VisibilityOffOutlinedIcon/> : <VisibilityOutlinedIcon/>}</IconButton></InputAdornment>}} />
         </Box>
-        <Button type="submit" fullWidth variant="contained" disabled={loading} className="camp-login-submit">{loading ? <><CircularProgress size={18} color="inherit" sx={{mr:1}}/>Signing you in…</> : "Sign in"}</Button>
+        <Button type="submit" endIcon={!loading && <ArrowRight size={18}/>} fullWidth variant="contained" disabled={loading} className="camp-login-submit">{loading ? <><CircularProgress size={18} color="inherit" sx={{mr:1}}/>Signing you in…</> : "Sign in"}</Button>
         <Button className="camp-login-switch" onClick={()=>{setEmailLogin(v=>!v);setError("");}}>{isEmailLogin ? "Use username instead" : "Sign in with email instead"}</Button>
         <Box className="camp-login-signup"><Typography>New to CampSync?</Typography><Button onClick={()=>navigate("/register")}>Create an account</Button></Box>
         <Typography className="camp-login-footnote">Secure access for your campus community</Typography>
