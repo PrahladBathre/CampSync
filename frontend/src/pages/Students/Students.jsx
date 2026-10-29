@@ -390,7 +390,7 @@ const Students = () => {
         <GridHeaderWithAction
           pageTitle={`Student Directory`}
           onButtonClick={openRegisterDialog}
-          buttonLabel={"Register student"}
+          buttonLabel={"Add student"}
         />
         {/* filter list*/}
         <Box
@@ -512,7 +512,7 @@ const Students = () => {
           <FormDialogWrapper
             isDialogOpen={isRegisterDialogOpen}
             closeDialog={closeRegisterDialog}
-            dialogHeading={"Register Student"}
+            dialogHeading={"Add student"}
           >
             <DialogContent>
               <FormFieldsStack>
@@ -857,7 +857,7 @@ const Students = () => {
                 disabled={registerLoading}
               >
                 <Typography variant="h5">
-                  {registerLoading ? "Registering..." : "Register"}
+                  {registerLoading ? "Saving student…" : "Add student"}
                 </Typography>
               </Button>
             </DialogActions>
@@ -873,7 +873,7 @@ const Students = () => {
           <FormDialogWrapper
             isDialogOpen={isUpdateDialogOpen}
             closeDialog={closeUpdateDialog}
-            dialogHeading={"Update student"}
+            dialogHeading={"Edit student details"}
           >
             <DialogContent>
               <FormFieldsStack>
@@ -1220,7 +1220,7 @@ const Students = () => {
                 disabled={updateLoading}
               >
                 <Typography variant="h5">
-                  {updateLoading ? "Updating..." : "Update"}
+                  {updateLoading ? "Saving changes…" : "Save changes"}
                 </Typography>
               </Button>
             </DialogActions>
@@ -1236,7 +1236,7 @@ const Students = () => {
           <FormDialogWrapper
             isDialogOpen={isDeleteDialogOpen}
             closeDialog={closeDeleteDialog}
-            dialogHeading={"Confirm Deletion"}
+            dialogHeading={"Delete student"}
           >
             <DeleteConfirmationDialogContent
               entityName={selectedStudent?.studentFullName}
