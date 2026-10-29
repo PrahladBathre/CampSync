@@ -1,10 +1,48 @@
 import { useEffect, useState } from "react";
-import { Alert, Box, CircularProgress, Typography, useTheme } from "@mui/material";
+import { Alert, Box, CircularProgress, Paper, Typography, useTheme } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import axios from "axios";
+import PageHeading from "../../components/PageHeading.jsx";
 
 export default function PieChart() {
-  const theme=useTheme(); const [data,setData]=useState([]); const [loading,setLoading]=useState(true); const [error,setError]=useState("");
-  useEffect(()=>{let active=true;axios.get("/api/v1/count-doc",{withCredentials:true}).then(({data:response})=>{const d=response?.data||{};if(active)setData([{id:"Faculty",label:"Faculty",value:Number(d.teachers)||0},{id:"Students",label:"Students",value:Number(d.students)||0},{id:"Courses",label:"Courses",value:Number(d.courses)||0},{id:"Subjects",label:"Subjects",value:Number(d.subjects)||0}].filter(x=>x.value>0));}).catch(()=>{if(active)setError("Campus totals could not be loaded. Sign in and try again.");}).finally(()=>{if(active)setLoading(false);});return()=>{active=false;};},[]);
-  return <Box sx={{width:"100%",p:{xs:1,sm:2}}}><Typography variant="h4" fontWeight={700}>Campus record distribution</Typography><Typography color="text.secondary" sx={{mt:1,mb:2}}>Explore how students, faculty members, courses, and subjects contribute to your campus records.</Typography>{error&&<Alert severity="warning" sx={{mb:2}}>{error}</Alert>}{loading?<CircularProgress/>:data.length===0?<Alert severity="info">No records are available to chart yet.</Alert>:<Box sx={{height:430,width:"100%"}}><ResponsivePie data={data} margin={{top:24,right:24,bottom:60,left:24}} innerRadius={0.55} padAngle={1.5} cornerRadius={4} activeOuterRadiusOffset={8} arcLinkLabelsSkipAngle={10} arcLinkLabelsTextColor={theme.palette.text.primary} arcLinkLabelsThickness={2} arcLinkLabelsColor={{from:"color"}} arcLabelsSkipAngle={10} colors={{scheme:"paired"}} legends={[{anchor:"bottom",direction:"row",justify:false,translateY:52,itemWidth:100,itemHeight:18,itemsSpacing:8,symbolSize:12,symbolShape:"circle"}]} theme={{textColor:theme.palette.text.primary,labels:{text:{fill:theme.palette.text.primary}}}} role="img" ariaLabel="Pie chart showing campus record distribution"/></Box>}</Box>;
+  const theme = useTheme();
+  const [data, setData] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    axios.get("/api/attendance/insights", { withCredentials: true })
+      .then(({ data: response }) => {
+        const insight = response?.data?.data || response?.data || {};
+        if (!active) return;
+        setTotal(Number(insight.totalRecords) || 0);
+        setData((insight.statusCounts || []).map((item) => ({
+          id: item.status, label: item.status, value: Number(item.count) || 0,
+        })).filter((item) => item.value > 0));
+      })
+      .catch((e) => { if (active) setError(e.response?.data?.message || "Attendance insights could not be loaded."); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, []);
+
+  const chartTheme = {
+    textColor: theme.palette.text.primary,
+    labels: { text: { fill: theme.palette.text.primary } },
+    legends: { text: { fill: theme.palette.text.secondary } },
+  };
+
+  return <Box sx={{ width: "100%", minWidth: 0, p: { xs: 0, sm: 1 } }}>
+    <PageHeading subtitle="Understand how recorded attendance is split across present, absent, late, and excused statuses.">Attendance status</PageHeading>
+    {error && <Alert severity="warning" sx={{ mb: 2 }}>{error}</Alert>}
+    {loading ? <CircularProgress aria-label="Loading attendance status" /> : data.length === 0
+      ? <Alert severity="info">No attendance records are available yet. Record attendance to populate this chart.</Alert>
+      : <Paper variant="outlined" sx={{ p: { xs: 1, sm: 2 }, borderRadius: 3, backgroundColor: "background.paper", borderColor: "divider" }}>
+          <Typography variant="body2" color="text.secondary">{total.toLocaleString()} total attendance records</Typography>
+          <Box sx={{ height: { xs: 330, sm: 420 }, width: "100%", mt: 1 }}>
+            <ResponsivePie data={data} margin={{ top: 20, right: 18, bottom: 64, left: 18 }} innerRadius={0.58} padAngle={1.5} cornerRadius={4} activeOuterRadiusOffset={6} arcLinkLabelsSkipAngle={12} arcLinkLabelsTextColor={theme.palette.text.primary} arcLinkLabelsThickness={2} arcLinkLabelsColor={{ from: "color" }} arcLabelsSkipAngle={10} colors={["#2f9e72", "#d95767", "#e3a23b", "#6e82d9"]} legends={[{ anchor: "bottom", direction: "row", justify: false, translateY: 58, itemWidth: 90, itemHeight: 18, itemsSpacing: 6, symbolSize: 10, symbolShape: "circle" }]} theme={chartTheme} role="img" ariaLabel="Attendance records grouped by status" />
+          </Box>
+        </Paper>}
+  </Box>;
 }
