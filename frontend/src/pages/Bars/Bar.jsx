@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { GraduationCap, BookOpen, Shapes, UsersRound, ClipboardCheck, Menu as MenuIcon, PanelLeftClose, LayoutDashboard, BarChart3, PieChart, LineChart } from "lucide-react";
 import { getColorTokens } from "../../theme/theme.js";
@@ -26,8 +26,13 @@ const SidebarItem = ({ title, to, icon, selected, setSelected, color }) => {
 const Bar = () => {
   const theme = useTheme();
   const colors = getColorTokens(theme.palette.mode);
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [selected, setSelected] = useState("Dashboard");
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    setCollapsed(isMobile);
+  }, [isMobile]);
   
 
   return (
@@ -43,9 +48,10 @@ const Bar = () => {
         },
         "& .pro-sidebar-inner": {
           borderRadius: "0 18px 18px 0",
-          border: "1px solid rgba(127,127,127,.18)",
+          border: "1px solid",
+          borderColor: "divider",
           backdropFilter: "blur(18px)",
-          boxShadow: "8px 0 36px rgba(0,0,0,.06)",
+          boxShadow: theme.palette.mode === "dark" ? "8px 0 36px rgba(0,0,0,.24)" : "8px 0 36px rgba(0,0,0,.06)",
           background: `${colors.gradient[100]} !important`,
         },
         "& .pro-icon-wrapper": {
