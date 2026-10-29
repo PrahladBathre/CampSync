@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { GraduationCap, BookOpen, Shapes, UsersRound, ClipboardCheck, Menu, PanelLeftClose, LayoutDashboard, ChartColumn, ChartPie, ChartNoAxesCombined } from "lucide-react";
+import { GraduationCap, BookOpen, Shapes, UsersRound, ClipboardCheck, Menu, PanelLeftClose, LayoutDashboard, BarChart3, PieChart, LineChart } from "lucide-react";
 import { getColorTokens } from "../../theme/theme.js";
 import "react-pro-sidebar/dist/css/styles.css";
 import { UserContext } from "../UserContext/UserContext.jsx";
@@ -148,21 +148,21 @@ const Bar = () => {
             <SidebarItem
               title="Bar"
               to="/barchart"
-              icon={<ChartColumn size={19} />}
+              icon={<BarChart3 size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Pie"
               to="/piechart"
-              icon={<ChartPie size={19} />}
+              icon={<PieChart size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
             <SidebarItem
               title="Line"
               to="/linechart"
-              icon={<ChartNoAxesCombined size={19} />}
+              icon={<LineChart size={19} />}
               selected={selected}
               setSelected={setSelected}
             />
