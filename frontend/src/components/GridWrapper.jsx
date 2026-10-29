@@ -33,7 +33,7 @@ const GridWrapper = ({ columns, rows, isDatafetched, loading }) => {
 
   return (
     <>
-      <Box  height="60vh" width="100%" m="24px 0">
+      <Box sx={{ height: { xs: "min(68vh, 560px)", md: "60vh" }, minHeight: 320, width: "100%", minWidth: 0, my: 3 }}>
         <DataGrid
                  apiRef={apiRef}
           rows={rows}
@@ -45,16 +45,21 @@ const GridWrapper = ({ columns, rows, isDatafetched, loading }) => {
           sx={{
             width: "100%",
             height: "100%",
-            border: "1px solid rgba(127,127,127,.22)",
-            borderRadius: "16px",
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 3,
             overflow: "hidden",
-            background: theme.palette.mode === "dark" ? "rgba(24,22,32,.66)" : "rgba(255,255,255,.72)",
-            backdropFilter: "blur(18px)",
-            "& .MuiDataGrid-columnHeaders": { background: theme.palette.mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.08)", borderBottom: "1px solid rgba(127,127,127,.22)" },
+            backgroundColor: "background.paper",
+            color: "text.primary",
+            "& .MuiDataGrid-columnHeaders": { backgroundColor: "action.hover", borderBottom: 1, borderColor: "divider" },
             "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
-            "& .MuiDataGrid-cell": { borderBottomColor: "rgba(127,127,127,.12)" },
-            "& .MuiDataGrid-row:hover": { backgroundColor: "rgba(203,70,129,.07)" },
-            "& .MuiDataGrid-footerContainer": { borderTop: "1px solid rgba(127,127,127,.18)" },
+            "& .MuiDataGrid-cell": { borderBottomColor: "divider", minWidth: 0 },
+            "& .MuiDataGrid-row:hover": { backgroundColor: "action.hover" },
+            "& .MuiDataGrid-footerContainer": { borderTop: 1, borderColor: "divider" },
+            "& .MuiDataGrid-actionsCell": { gap: .5 },
+            "& .MuiDataGrid-actionsCell .MuiIconButton-root": { borderRadius: 2, minWidth: 36, minHeight: 36 },
+            "& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus": { outline: "none" },
+            "& .MuiDataGrid-virtualScroller": { overflowX: "auto" },
           }}
         />
       </Box>
@@ -66,13 +71,12 @@ const GridWrapper = ({ columns, rows, isDatafetched, loading }) => {
             display: "flex",
             alignItems: "center",
             gap: 1,
-            borderRadius: 1,
+            borderRadius: 2,
             px: 2,
-            color: colors.text[100],
-            background: theme.palette.mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.08)",
-            border: "1px solid rgba(127,127,127,.22)",
-            borderRadius: "12px",
-            color: colors.text[100],
+            color: "text.primary",
+            backgroundColor: "action.hover",
+            border: 1,
+            borderColor: "divider",
           }}
         >
           <Sparkles size={18} strokeWidth={1.8} />
@@ -80,8 +84,9 @@ const GridWrapper = ({ columns, rows, isDatafetched, loading }) => {
             variant="h5"
             sx={{
               lineHeight: 1,
-              fontWeight: { xs: 200, sm: 400 },
-              color: colors.text[100],
+              fontWeight: 600,
+              color: "inherit",
+              fontSize: "0.875rem",
             }}
           >
             Resize
