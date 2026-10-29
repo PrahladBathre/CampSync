@@ -24,7 +24,7 @@ const UserProfile = ({ id, open, pop, handleClick }) => {
         <Typography fontWeight={700} sx={{ px: 1, pt: .5 }}>{user?.teacherFullName || user?.displayName || "Your account"}</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ px: 1, mb: 1.5 }}>{user?.teacherEmail || user?.email || ""}</Typography>
         {error && <Alert severity="error" sx={{ mb: 1 }}>{error}</Alert>}
-        <Button fullWidth variant="contained" startIcon={<Settings2 size={18} />} onClick={() => { setSettingsOpen(true); handleClick?.(); }} sx={{ justifyContent: "flex-start", mt: .5, mb: .75, px: 1.5, py: 1.15, borderRadius: 2.5, fontWeight: 650, textTransform: "none", color: "primary.contrastText", bgcolor: "primary.main", boxShadow: "none", "&:hover": { bgcolor: "primary.dark", boxShadow: "0 6px 16px rgba(0,0,0,.12)" } }}>Profile settings</Button>
+        <Button fullWidth variant="contained" startIcon={<Settings2 size={18} />} onClick={() => { setSettingsOpen(true); handleClick?.(); }} sx={{ justifyContent: "flex-start", mt: .5, mb: .75, px: 1.5, py: 1.15, borderRadius: 2.5, fontWeight: 650, textTransform: "none", color: "primary.contrastText", bgcolor: "secondary.main", boxShadow: "none", "&:hover": { bgcolor: "secondary.dark", boxShadow: "0 6px 16px rgba(0,0,0,.12)" } }}>Profile settings</Button>
         <Button fullWidth color="error" startIcon={<LogOut size={18} />} onClick={logoutHandler} disabled={loggingOut} sx={{ justifyContent: "flex-start" }}>{loggingOut ? "Signing out…" : "Sign out"}</Button>
       </Box>
     </Popper>
