@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
-import { UsersRound, GraduationCap, BookOpen, LibraryBig, Sparkles } from "lucide-react";
+import { UsersRound, GraduationCap, BookOpen, Library, Sparkles } from "lucide-react";
 import PageSectionWrapper from "../../components/PageSectionWrapper";
 import RecentActivity from "./RecentActivity";
 import axios from "axios";
