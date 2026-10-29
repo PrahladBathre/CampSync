@@ -1,6 +1,6 @@
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"; // Make sure this path is correct
+import { Sparkles } from "lucide-react";
 import { getColorTokens } from "../theme/theme";
 
 const GridWrapper = ({ columns, rows, isDatafetched }) => {
@@ -59,10 +59,19 @@ const GridWrapper = ({ columns, rows, isDatafetched }) => {
             borderRadius: 1,
             px: 2,
             color: colors.text[100],
-            background: colors.gradient[100],
+            background: theme.palette.mode === "dark" ? "rgba(24, 22, 32, 0.66)" : "rgba(255, 255, 255, 0.72)",
+            backdropFilter: "blur(18px)",
+            border: "1px solid rgba(127,127,127,.22)",
+            borderRadius: "16px",
+            overflow: "hidden",
+            "& .MuiDataGrid-columnHeaders": { background: theme.palette.mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.08)", borderBottom: "1px solid rgba(127,127,127,.22)" },
+            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
+            "& .MuiDataGrid-cell": { borderBottomColor: "rgba(127,127,127,.12)" },
+            "& .MuiDataGrid-row:hover": { backgroundColor: "rgba(203,70,129,.07)" },
+            "& .MuiDataGrid-footerContainer": { borderTop: "1px solid rgba(127,127,127,.18)" },
           }}
         >
-          <AutoAwesomeIcon />
+          <Sparkles size={18} strokeWidth={1.8} />
           <Typography
             variant="h5"
             sx={{
