@@ -27,6 +27,6 @@ const UpdateUser = ({ open = true, onClose = () => {} }) => {
     <TextField label="Email" type="email" required fullWidth value={form.teacherEmail} onChange={e=>setForm({...form,teacherEmail:e.target.value})}/>
     <TextField label="Username" required fullWidth value={form.teacherUsername} onChange={e=>setForm({...form,teacherUsername:e.target.value})}/>
     <TextField label="Contact number" fullWidth value={form.teacherContactInfo} onChange={e=>setForm({...form,teacherContactInfo:e.target.value})}/>
-  </Stack></DialogContent><DialogActions sx={{ p: 2.5, pt: 0 }}><Button onClick={onClose} disabled={saving}>Cancel</Button><Button type="submit" variant="contained" startIcon={<Save size={17}/>} disabled={saving}>{saving ? "Saving…" : "Save changes"}</Button></DialogActions></form></Dialog>;
+  </Stack></DialogContent><DialogActions sx={{ p: 2.5, pt: 0, display: "flex", flexWrap: "wrap", gap: 1.25, "& .MuiButton-root": { minHeight: 42, visibility: "visible", opacity: 1 } }}><Button className="profile-cancel-button" onClick={onClose} disabled={saving} variant="outlined" sx={{ color: "text.primary", borderColor: "divider", backgroundColor: "background.paper", "&:hover": { backgroundColor: "action.hover", borderColor: "text.secondary" } }}>Cancel</Button><Button type="submit" variant="contained" startIcon={<Save size={17}/>} disabled={saving}>{saving ? "Saving…" : "Save changes"}</Button></DialogActions></form></Dialog>;
 };
 export default UpdateUser;
