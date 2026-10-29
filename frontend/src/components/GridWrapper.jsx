@@ -1,11 +1,10 @@
 import { useMemo, useState } from "react";
-import { Box, IconButton, InputAdornment, TextField, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import { Search, Sparkles, X } from "lucide-react";
 
 const GridWrapper = ({ columns = [], rows = [], isDatafetched, loading }) => {
   const apiRef = useGridApiRef();
-  const theme = useTheme();
   const [search, setSearch] = useState("");
 
   const flexibleColumns = useMemo(() => columns.map((col) => ({
