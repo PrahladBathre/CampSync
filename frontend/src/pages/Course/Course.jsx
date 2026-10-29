@@ -246,9 +246,9 @@ const Course = () => {
     <Box width="100%">
       <PageSectionWrapper>
         <GridHeaderWithAction
-          pageTitle={"Academic Course Management"}
+          pageTitle={"Course Directory"}
           onButtonClick={openRegisterDialog}
-          buttonLabel={" Add New Course"}
+          buttonLabel={"Add course"}
         />
         <GridWrapper
           isDatafetched={isDataFetched}
@@ -371,7 +371,7 @@ const Course = () => {
                     disabled={registerLoading}
                   >
                     <Typography variant="h5">
-                      {registerLoading ? "Registering..." : "Register"}
+                      {registerLoading ? "Saving course…" : "Create course"}
                     </Typography>
                   </Button>
                 </DialogActions>
@@ -484,7 +484,7 @@ const Course = () => {
                   disabled={updateLoading}
                 >
                   <Typography variant="h5">
-                    {updateLoading ? "Updating..." : "Update"}
+                    {updateLoading ? "Saving changes…" : "Save changes"}
                   </Typography>
                 </Button>
               </Box>
