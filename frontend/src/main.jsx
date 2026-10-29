@@ -48,6 +48,7 @@ axios.interceptors.response.use(
       }
       return axios(request);
     } catch {
+      try { sessionStorage.removeItem("campSyncAccessToken"); } catch {}
       return Promise.reject(error);
     }
   }
