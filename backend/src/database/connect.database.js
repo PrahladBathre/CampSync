@@ -13,7 +13,7 @@ const connectDB = async () => {
   console.log(database,db_name,db_user ,db_pass)
   try {
     const conn = await mongoose.connect(
-      `mongodb+srv://Prahlad21:<Prahlad21>@system0.cgf4duq.mongodb.net/`
+      `mongodb+srv://Prahlad21:<Prahlad21>@system0.cgf4duq.mongodb.net/Department`
     );
     console.log(`MongoDB Connected: ${conn.connection.host}`); //DB host
     
