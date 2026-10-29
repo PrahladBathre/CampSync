@@ -45,6 +45,16 @@ const GridWrapper = ({ columns, rows, isDatafetched }) => {
           sx={{
             width: "100%",
             height: "100%",
+            border: "1px solid rgba(127,127,127,.22)",
+            borderRadius: "16px",
+            overflow: "hidden",
+            background: theme.palette.mode === "dark" ? "rgba(24,22,32,.66)" : "rgba(255,255,255,.72)",
+            backdropFilter: "blur(18px)",
+            "& .MuiDataGrid-columnHeaders": { background: theme.palette.mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.08)", borderBottom: "1px solid rgba(127,127,127,.22)" },
+            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
+            "& .MuiDataGrid-cell": { borderBottomColor: "rgba(127,127,127,.12)" },
+            "& .MuiDataGrid-row:hover": { backgroundColor: "rgba(203,70,129,.07)" },
+            "& .MuiDataGrid-footerContainer": { borderTop: "1px solid rgba(127,127,127,.18)" },
           }}
         />
       </Box>
@@ -59,16 +69,10 @@ const GridWrapper = ({ columns, rows, isDatafetched }) => {
             borderRadius: 1,
             px: 2,
             color: colors.text[100],
-            background: theme.palette.mode === "dark" ? "rgba(24, 22, 32, 0.66)" : "rgba(255, 255, 255, 0.72)",
-            backdropFilter: "blur(18px)",
+            background: theme.palette.mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.08)",
             border: "1px solid rgba(127,127,127,.22)",
-            borderRadius: "16px",
-            overflow: "hidden",
-            "& .MuiDataGrid-columnHeaders": { background: theme.palette.mode === "dark" ? "rgba(203,70,129,.12)" : "rgba(203,70,129,.08)", borderBottom: "1px solid rgba(127,127,127,.22)" },
-            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
-            "& .MuiDataGrid-cell": { borderBottomColor: "rgba(127,127,127,.12)" },
-            "& .MuiDataGrid-row:hover": { backgroundColor: "rgba(203,70,129,.07)" },
-            "& .MuiDataGrid-footerContainer": { borderTop: "1px solid rgba(127,127,127,.18)" },
+            borderRadius: "12px",
+            color: colors.text[100],
           }}
         >
           <Sparkles size={18} strokeWidth={1.8} />
