@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
-import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
-import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
+import { UsersRound, GraduationCap, BookOpen, LibraryBig, Sparkles } from "lucide-react";
 import PageSectionWrapper from "../../components/PageSectionWrapper";
 import RecentActivity from "./RecentActivity";
 import axios from "axios";
@@ -11,10 +8,10 @@ import { UserContext } from "../UserContext/UserContext";
 import "./dashboard-refresh.css";
 
 const stats = [
-  { key: "teachers", label: "Faculty members", icon: Groups2OutlinedIcon, tone: "teal" },
-  { key: "students", label: "Enrolled students", icon: SchoolOutlinedIcon, tone: "purple" },
-  { key: "courses", label: "Active courses", icon: MenuBookOutlinedIcon, tone: "blue" },
-  { key: "subjects", label: "Academic subjects", icon: AutoStoriesOutlinedIcon, tone: "amber" },
+  { key: "teachers", label: "Faculty members", icon: UsersRound, tone: "teal" },
+  { key: "students", label: "Enrolled students", icon: GraduationCap, tone: "purple" },
+  { key: "courses", label: "Active courses", icon: BookOpen, tone: "blue" },
+  { key: "subjects", label: "Academic subjects", icon: LibraryBig, tone: "amber" },
 ];
 
 export default function Dashboard() {
@@ -40,7 +37,7 @@ export default function Dashboard() {
       <Typography component="h1" className="camp-hero-title">Good to see you, {name.split(" ")[0]}.</Typography>
       <Typography className="camp-hero-subtitle">A clearer view of your department, classes, and campus activity.</Typography>
       <Box className="camp-hero-chip"><span className="camp-live-dot" /> Overview at a glance</Box>
-    </Box><Box className="camp-hero-art" aria-hidden="true"><Box className="camp-orbit camp-orbit-one"/><Box className="camp-orbit camp-orbit-two"/><Box className="camp-art-card"><SchoolOutlinedIcon/><span>Learn</span><strong>Grow</strong></Box><Box className="camp-art-spark">✦</Box></Box></Box>
+    </Box><Box className="camp-hero-art" aria-hidden="true"><Box className="camp-orbit camp-orbit-one"/><Box className="camp-orbit camp-orbit-two"/><Box className="camp-art-card"><GraduationCap size={32} strokeWidth={1.7}/><span>Learn</span><strong>Grow</strong></Box><Box className="camp-art-spark">✦</Box></Box></Box>
     {error && <Alert severity="warning" sx={{mt:2}}>{error}</Alert>}
     <Box className="camp-section-heading"><Box><Typography component="h2">Campus overview</Typography><Typography>Key numbers across your academic workspace</Typography></Box>{loading && <CircularProgress size={20} aria-label="Loading campus totals"/>}</Box>
     <Box className="camp-stat-grid">{stats.map(({key,label,icon:Icon,tone})=><Box className="camp-stat-card" key={key}><Box className={`camp-stat-icon ${tone}`}><Icon/></Box><Box className="camp-stat-meta"><Typography>{label}</Typography><Typography component="strong">{loading?"—":counts[key].toLocaleString()}</Typography><span>Academic records</span></Box></Box>)}</Box>
