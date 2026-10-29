@@ -272,51 +272,39 @@ export const createCustomTheme = (mode) => {
       },
       MuiDataGrid: {
         styleOverrides: {
-          //filter panel
-          panelContent: {
-            backgroundColor: colors.clay[100],
-            color: colors.text[100],
-          },
+          panelContent: { backgroundColor: "background.paper", color: "text.primary" },
           root: {
-            "& .MuiDataGrid-root": {
-              border: "none !important",
-              background: `${colors.primary[700]} !important`,
-              color: `${colors.text[100]} !important`,
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 14,
+            backgroundColor: "background.paper",
+            color: "text.primary",
+            "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader, & .MuiDataGrid-filler": {
+              backgroundColor: "action.hover",
+              color: "text.primary",
+              borderBottom: "1px solid",
+              borderColor: "divider",
             },
+            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
             "& .MuiDataGrid-cell": {
-              borderBottom: "none",
-              fontSize: "0.9rem",
-              paddingLeft: "24px",
+              borderBottom: "1px solid",
+              borderBottomColor: "divider",
+              fontSize: "0.875rem",
+              px: 1.5,
             },
-            "& .MuiDataGrid-columnHeader,  .MuiDataGrid-filler ": {
-              background: `${colors.primary[900]} !important`,
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-row:hover": {
-              backgroundColor: `${colors.clay[100]} !important`,
-            },
+            "& .MuiDataGrid-row:hover": { backgroundColor: "action.hover" },
             "& .MuiDataGrid-row.Mui-selected": {
-              backgroundColor: `${colors.pink[100]} !important`,
-              "&:hover": {
-                backgroundColor: `${colors.ArtyClick[100]} !important`,
-              },
+              backgroundColor: mode === "dark" ? "rgba(203,70,129,.18)" : "rgba(203,70,129,.10)",
+              "&:hover": { backgroundColor: mode === "dark" ? "rgba(203,70,129,.24)" : "rgba(203,70,129,.15)" },
             },
             "& .MuiDataGrid-footerContainer": {
-              borderTop: "none",
-              backgroundColor: `${colors.primary[900]} !important`,
+              borderTop: "1px solid",
+              borderColor: "divider",
+              backgroundColor: "action.hover",
             },
-            "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: `${colors.grey[100]} !important`,
-            },
-            "& .MuiDataGrid-cell:hover": {
-              cursor: "pointer",
-            },
-            ".MuiDataGrid-scrollbarFiller--header": {
-              backgroundColor: colors.primary[900],
-            },
-            "& .MuiDataGrid-filler": {
-              backgroundColor: colors.primary[900],
-            },
+            "& .MuiDataGrid-virtualScroller": { backgroundColor: "background.paper" },
+            "& .MuiDataGrid-scrollbarFiller--header, & .MuiDataGrid-filler": { backgroundColor: "action.hover" },
+            "& .MuiDataGrid-actionsCell": { gap: .5 },
           },
         },
       },
@@ -328,15 +316,13 @@ export const createCustomTheme = (mode) => {
               color: colors.primary[100],
             },
             "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: colors.green[500],
-              },
-              "&:hover fieldset": {
-                borderColor: colors.cyan[300],
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: colors.grey[900],
-              },
+              backgroundColor: mode === "dark" ? "rgba(255,255,255,.055)" : "rgba(255,255,255,.82)",
+              color: colors.text[100],
+              "& fieldset": { borderColor: mode === "dark" ? "rgba(255,255,255,.24)" : "rgba(45,35,55,.24)" },
+              "&:hover fieldset": { borderColor: colors.secondary[500] },
+              "&.Mui-focused fieldset": { borderColor: colors.secondary[500], borderWidth: 2 },
+              "& input": { color: colors.text[100] },
+              "& .MuiInputAdornment-root": { color: colors.text[200] },
               "& .MuiTextField-input:focus": {},
             },
           },
