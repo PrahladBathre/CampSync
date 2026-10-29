@@ -17,7 +17,7 @@ const TopBar = () => {
     <Tooltip arrow title="Notifications"><IconButton aria-label="Toggle notifications" onClick={() => setNotificationOpen((v) => !v)}><Bell size={19} strokeWidth={1.8} /></IconButton></Tooltip>
     <Tooltip arrow title="Account menu"><IconButton aria-label="Open account menu" onClick={profileHandler}><UserRound size={19} strokeWidth={1.8} /></IconButton></Tooltip>
     {isNotificationOpen && <Box sx={{ position: "absolute", zIndex: 1300, right: 56, top: "100%", minWidth: 280 }}><NotificationPanel /></Box>}
-    {anchorEl && <UserProfilePanel id={profileOpen ? "account-menu" : undefined} handleClick={() => setAnchorEl(null)} open={profileOpen} pop={anchorEl} />}
+    <UserProfilePanel id={profileOpen ? "account-menu" : undefined} handleClick={() => setAnchorEl(null)} open={profileOpen} pop={anchorEl} />
   </Box>;
 };
 export default TopBar;
