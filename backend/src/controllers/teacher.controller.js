@@ -200,16 +200,15 @@ const confirmTeacherEmailVerification = asyncHandler(async (req, res) => {
 const loginTeacher = asyncHandler(async (req, res) => {
   const { teacherUsername, teacherEmail, teacherPassword } = req.body;
 
-  if ((!teacherUsername || !teacherEmail) && !teacherPassword) {
-    throw new ApiError(
-      400,
-      "Please provide either username or email and the password."
-    );
+  const username = typeof teacherUsername === "string" ? teacherUsername.trim().toLowerCase() : "";
+  const email = typeof teacherEmail === "string" ? teacherEmail.trim().toLowerCase() : "";
+  if ((!username && !email) || typeof teacherPassword !== "string" || !teacherPassword) {
+    throw new ApiError(400, "Please provide a username or email and your password.");
   }
-
-  const teacher = await Teacher.findOne({
-    $or: [{ teacherUsername }, { teacherEmail }],
-  });
+  if (username && email) {
+    throw new ApiError(400, "Use either your username or your email to sign in, not both.");
+  }
+  const teacher = await Teacher.findOne(username ? { teacherUsername: username } : { teacherEmail: email });
 
   if (!teacher) {
     throw new ApiError(404, "Teacher not found.");
