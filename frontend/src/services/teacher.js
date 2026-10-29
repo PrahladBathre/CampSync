@@ -53,10 +53,11 @@ export const loginTeacher = async (teacher) => {
 };
 // Logout teacher
 export const logoutTeacher = async () => {
-  const logout = await axios.post("/api/teacher/logout", {}, {
-    withCredentials: true,
-  });
-  return logout;
+  try {
+    return await axios.post("/api/teacher/logout", {}, { withCredentials: true });
+  } finally {
+    try { sessionStorage.removeItem("campSyncAccessToken"); } catch {}
+  }
 };
 
 // Refresh access token
