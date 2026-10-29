@@ -1,14 +1,12 @@
 import axios from "axios";
 
 // Get all teachers
-export const getAllTeachers = async () =>
-  await axios
-    .get("/api/teacher", {
-      withCredentials: true, // ✅ Important for cookies/session
-    })
-    .then((dataset) => dataset.data.data)
-    .then((res) => res);
-
+export const getAllTeachers = async () => {
+  const response = await axios.get("/api/teacher", { withCredentials: true });
+  const records = response?.data?.data ?? response?.data;
+  if (!Array.isArray(records)) throw new Error("The teacher API returned an unexpected response.");
+  return records;
+};
 // Get teacher count
 export const getTeacherCount = async () => {
   return await axios
