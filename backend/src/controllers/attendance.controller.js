@@ -109,7 +109,37 @@ const getStudentsByCourseAndSemesterAndSubject = asyncHandler(
       );
   }
 );
-const attendanceCount = asyncHandler(async (req, res) => {});
+const attendanceCount = asyncHandler(async (req, res) => {
+  const [statusCounts, dailyTrend, totalRecords] = await Promise.all([
+    Attendance.aggregate([
+      { $group: { _id: "$attendanceStatus", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+    ]),
+    Attendance.aggregate([
+      { $match: { attendanceDate: { $type: "date" } } },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$attendanceDate" } },
+          present: { $sum: { $cond: [{ $eq: ["$attendanceStatus", "Present"] }, 1, 0] } },
+          absent: { $sum: { $cond: [{ $eq: ["$attendanceStatus", "Absent"] }, 1, 0] } },
+          late: { $sum: { $cond: [{ $eq: ["$attendanceStatus", "Late"] }, 1, 0] } },
+          excused: { $sum: { $cond: [{ $eq: ["$attendanceStatus", "Excused"] }, 1, 0] } },
+          total: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+      { $limit: 90 },
+    ]),
+    Attendance.countDocuments(),
+  ]);
+
+  return res.status(200).json(new Apiresponse(200, {
+    totalRecords,
+    statusCounts: statusCounts.map(({ _id, count }) => ({ status: _id || "Unspecified", count })),
+    dailyTrend: dailyTrend.map(({ _id, ...values }) => ({ date: _id, ...values })),
+    datedRecords: dailyTrend.reduce((sum, day) => sum + day.total, 0),
+  }, "Attendance insights fetched successfully"));
+});
 const removeStudentAttendance = asyncHandler(async (req, res) => {});
 export {
   addAttendance,
