@@ -2,8 +2,8 @@
 import React, { useContext, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
-import { GraduationCap, BookOpen, Shapes, UsersRound, ClipboardCheck, Menu, PanelLeftClose, LayoutDashboard, BarChart3, PieChart, LineChart } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { GraduationCap, BookOpen, Shapes, UsersRound, ClipboardCheck, Menu as MenuIcon, PanelLeftClose, LayoutDashboard, BarChart3, PieChart, LineChart } from "lucide-react";
 import { getColorTokens } from "../../theme/theme.js";
 import "react-pro-sidebar/dist/css/styles.css";
 import { UserContext } from "../UserContext/UserContext.jsx";
@@ -18,7 +18,7 @@ const SidebarItem = ({ title, to, icon, selected, setSelected, color }) => {
       onClick={() => setSelected(title)}
     >
       <Typography sx={{ fontWeight: "500" }}>{title}</Typography>
-      <Link to={to} />
+      <NavLink to={to} aria-label={title} />
     </MenuItem>
   );
 };
@@ -73,7 +73,7 @@ const Bar = () => {
       <ProSidebar collapsed={collapsed}>
         <Menu iconShape="square">
           <MenuItem
-            icon={collapsed ? <Menu size={20} /> : <PanelLeftClose size={20} />}
+            icon={collapsed ? <MenuIcon size={20} /> : <PanelLeftClose size={20} />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
               width: "10px",
