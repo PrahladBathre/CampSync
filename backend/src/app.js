@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -10,6 +11,17 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
+
+// Render health check: confirms the API process and MongoDB are both ready.
+app.get("/api/health", (_req, res) => {
+  const databaseReady = mongoose.connection.readyState === 1;
+  res.status(databaseReady ? 200 : 503).json({
+    success: databaseReady,
+    status: databaseReady ? "healthy" : "database_unavailable",
+    database: databaseReady ? "connected" : "disconnected",
+    timestamp: new Date().toISOString(),
+  });
+});
 
 import { attendanceRoutes, courseRoutes, gradeRoutes, settingRoutes, studentRoutes, subjectRoutes, teacherRoutes } from "./routes/app.routes.js";
 import { recentActivityRoute } from "./routes/recentActivity.route.js";
