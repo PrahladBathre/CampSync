@@ -2,7 +2,7 @@ import React from "react";
 
 const LogoSync = () => {
   return (
-    <svg width="200" height="80" viewBox="0 0 400 80" className="looka-1j8o68f">
+    <svg width="200" height="80" viewBox="0 0 400 80" className="looka-1j8o68f" role="img" aria-label="CampSync logo">
       <defs id="SvgjsDefs2713"></defs>
       <g
         id="SvgjsG2714"
@@ -10,7 +10,7 @@ const LogoSync = () => {
         transform="matrix(1.1864376862690964,0,0,1.1864376862690964,-2.9660913869848673,2.033915401866029)"
         fill="#00a8b5"
       >
-        <title xmlns="http://www.w3.org/2000/svg">1</title>
+        
         <path
           xmlns="http://www.w3.org/2000/svg"
           d="M32,16.5H56.24a1.49861,1.49861,0,0,1,1.3.75,29.56871,29.56871,0,0,1,3.03,7.37,1.57067,1.57067,0,0,1-.26005,1.3,1.5914,1.5914,0,0,1-1.19.58H32A5.50968,5.50968,0,0,0,26.5,32,1.498,1.498,0,0,1,25,33.5H18A1.498,1.498,0,0,1,16.5,32,15.51337,15.51337,0,0,1,32,16.5Z"
