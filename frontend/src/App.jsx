@@ -3,7 +3,7 @@ import "./App.css";
 import { ThemeModeContext, useThemeMode } from "./theme/theme.js";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Layout from "./Layout/Layout.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Students from "./pages/Students/Students.jsx";
@@ -57,7 +57,9 @@ function SeoManager() {
 
 function AnalyticsPageTracker() {
   const location = useLocation();
+  const firstRender = useRef(true);
   useEffect(() => {
+    if (firstRender.current) { firstRender.current = false; return; }
     let consent = null;
     try { consent = localStorage.getItem("campsync-cookie-consent"); } catch {}
     if (consent === "accepted" && typeof window.gtag === "function") {
