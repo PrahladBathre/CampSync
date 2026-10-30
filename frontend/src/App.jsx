@@ -26,7 +26,19 @@ import ThankYou from "./pages/ThankYou/ThankYou.jsx";
 import CookieConsent from "./components/CookieConsent.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 
-function AnalyticsPageTracker() {\n  const location = useLocation();\n  useEffect(() => {\n    let consent = null;\n    try { consent = localStorage.getItem("campsync-cookie-consent"); } catch {}\n    if (consent === "accepted" && typeof window.gtag === "function") {\n      window.gtag("event", "page_view", { page_path: location.pathname + location.search });\n    }\n  }, [location.pathname, location.search]);\n  return null;\n}\n\nfunction App() {
+function AnalyticsPageTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    let consent = null;
+    try { consent = localStorage.getItem("campsync-cookie-consent"); } catch {}
+    if (consent === "accepted" && typeof window.gtag === "function") {
+      window.gtag("event", "page_view", { page_path: location.pathname + location.search });
+    }
+  }, [location.pathname, location.search]);
+  return null;
+}
+
+function App() {
   const [theme, colorMode] = useThemeMode();
   return (
     <ThemeModeContext.Provider value={colorMode}>
