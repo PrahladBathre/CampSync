@@ -127,3 +127,20 @@ html:has(.page-content)::-webkit-scrollbar, body:has(.page-content)::-webkit-scr
   .MuiDataGrid-columnHeader .MuiIconButton-root,
   .MuiDataGrid-columnHeader .MuiSvgIcon-root { color: #ffffff !important; }
 }
+
+/* Additional small-screen safeguards for dense academic views. */
+@media (max-width: 768px) {
+  .app { min-width: 0; }
+  .content { min-width: 0; }
+  .MuiDataGrid-root { max-width: 100%; }
+  .MuiDataGrid-virtualScroller { overflow-x: auto !important; }
+  .MuiToolbar-root { flex-wrap: wrap; gap: 8px; }
+  .MuiTypography-h3 { font-size: clamp(1.65rem, 7vw, 2.5rem); }
+  .MuiTypography-h4 { font-size: clamp(1.4rem, 5vw, 2rem); }
+}
+@media (max-width: 420px) {
+  .MuiButton-root { padding-inline: 12px; }
+  .MuiDialogContent-root { padding: 16px !important; }
+  .MuiDataGrid-columnHeaderTitle { font-size: 11px; }
+  .MuiDataGrid-cell { font-size: 11px; }
+}
