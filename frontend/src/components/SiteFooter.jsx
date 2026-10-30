@@ -10,6 +10,7 @@ export default function SiteFooter() {
         <MuiLink component={Link} to="/terms" underline="hover" variant="caption">Terms</MuiLink>
         <MuiLink component={Link} to="/contact" underline="hover" variant="caption">Contact</MuiLink>
         <MuiLink component={Link} to="/support" underline="hover" variant="caption">Support</MuiLink>
+        <MuiLink component="button" onClick={() => window.dispatchEvent(new Event("campsync:open-cookie-settings"))} underline="hover" variant="caption" sx={{ border: 0, p: 0, bgcolor: "transparent", cursor: "pointer" }}>Cookie preferences</MuiLink>
       </Box>
     </Container>
   </Box>;
