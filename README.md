@@ -221,3 +221,38 @@ LinkedIn
 📄 License
 
 This project is available under the MIT License.
+
+## Public pages, privacy and deployment configuration
+
+The frontend includes public Privacy, Terms, Contact, Support and Thank You routes. Public assets are served from `frontend/public`:
+
+- `/robots.txt` controls crawler access to private application routes.
+- `/sitemap.xml` lists public pages only.
+- `/favicon.svg` and `/site.webmanifest` provide the CampSync app identity.
+
+### Optional analytics
+
+To enable Google Analytics 4, set the frontend Render environment variable:
+
+```text
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+The analytics script is not loaded until a visitor allows optional analytics in the cookie banner. The measurement ID is supplied by the site operator in Google Analytics; do not commit it to source control.
+
+### Contact and support delivery
+
+The contact and support forms use the backend email transport. Configure these backend Render environment variables for delivery:
+
+```text
+CONTACT_EMAIL=your-monitored-support-inbox@example.com
+SMTP_Server=your-smtp-host
+SMTP_name=CampSync
+Login_brevo=your-smtp-username
+brevo_pass=your-smtp-password
+sender=verified-sender@example.com
+```
+
+Use a monitored inbox and a sender address verified with your SMTP provider. The contact API returns a service-unavailable response when required delivery settings are missing. Keep all SMTP credentials in Render environment settings, never in Git.
+
+The policy pages describe the application at a high level. The operator should review them against the institution's actual legal requirements, configured providers and retention practices before treating them as formal legal advice.
