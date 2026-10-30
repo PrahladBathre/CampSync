@@ -26,6 +26,35 @@ import ThankYou from "./pages/ThankYou/ThankYou.jsx";
 import CookieConsent from "./components/CookieConsent.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 
+const seoPages = {
+  "/login": ["Sign in | CampSync", "Sign in to your CampSync academic workspace.", false],
+  "/register": ["Create an account | CampSync", "Register a teacher account for CampSync.", false],
+  "/privacy": ["Privacy Policy | CampSync", "Learn how CampSync handles account, academic and application information.", true],
+  "/terms": ["Terms of Use | CampSync", "Read the terms for using the CampSync campus management application.", true],
+  "/contact": ["Contact CampSync", "Contact the CampSync team with a question or enquiry.", true],
+  "/support": ["CampSync Support", "Get help with CampSync and report an application issue.", true],
+  "/thank-you": ["Thank you | CampSync", "Your CampSync request confirmation.", false],
+  "/emailVerification": ["Email verification | CampSync", "Verify your CampSync account email address.", false],
+};
+function SeoManager() {
+  const location = useLocation();
+  useEffect(() => {
+    const path = location.pathname;
+    const [title, description, indexable] = seoPages[path] || ["CampSync — Campus management made simpler", "A connected workspace for campus and academic coordination.", false];
+    document.title = title;
+    let descriptionTag = document.querySelector('meta[name="description"]');
+    if (!descriptionTag) { descriptionTag = document.createElement("meta"); descriptionTag.name = "description"; document.head.appendChild(descriptionTag); }
+    descriptionTag.content = description;
+    let robotsTag = document.querySelector('meta[name="robots"]');
+    if (!robotsTag) { robotsTag = document.createElement("meta"); robotsTag.name = "robots"; document.head.appendChild(robotsTag); }
+    robotsTag.content = indexable ? "index, follow" : "noindex, nofollow";
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+    canonical.href = "https://campsync.onrender.com" + (indexable ? path : "/login");
+  }, [location.pathname]);
+  return null;
+}
+
 function AnalyticsPageTracker() {
   const location = useLocation();
   useEffect(() => {
