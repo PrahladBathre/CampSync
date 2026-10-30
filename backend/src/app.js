@@ -15,6 +15,7 @@ import { attendanceRoutes, courseRoutes, gradeRoutes, settingRoutes, studentRout
 import { recentActivityRoute } from "./routes/recentActivity.route.js";
 import { countDocuments } from "./routes/countDoc.js";
 import { accountAuthRoutes } from "./routes/accountAuth.route.js";
+import { contactRoutes } from "./routes/contact.route.js";
 
 app.use((req, res, next) => {
   const allowed = "Department";
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", accountAuthRoutes);
+app.use("/api/contact", contactRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/grades", gradeRoutes);
