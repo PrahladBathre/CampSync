@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /student
+Disallow: /course
+Disallow: /subject
+Disallow: /teacher
+Disallow: /attendance
+Disallow: /barchart
+Disallow: /piechart
+Disallow: /linechart
+Disallow: /UpdateUser
+Disallow: /api/
+
+Sitemap: https://campsync.onrender.com/sitemap.xml
