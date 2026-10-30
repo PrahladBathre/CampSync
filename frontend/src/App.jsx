@@ -2,7 +2,8 @@
 import "./App.css";
 import { ThemeModeContext, useThemeMode } from "./theme/theme.js";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Layout from "./Layout/Layout.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Students from "./pages/Students/Students.jsx";
@@ -25,7 +26,7 @@ import ThankYou from "./pages/ThankYou/ThankYou.jsx";
 import CookieConsent from "./components/CookieConsent.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 
-function App() {
+function AnalyticsPageTracker() {\n  const location = useLocation();\n  useEffect(() => {\n    let consent = null;\n    try { consent = localStorage.getItem("campsync-cookie-consent"); } catch {}\n    if (consent === "accepted" && typeof window.gtag === "function") {\n      window.gtag("event", "page_view", { page_path: location.pathname + location.search });\n    }\n  }, [location.pathname, location.search]);\n  return null;\n}\n\nfunction App() {
   const [theme, colorMode] = useThemeMode();
   return (
     <ThemeModeContext.Provider value={colorMode}>
