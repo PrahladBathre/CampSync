@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { enableAnalytics } from "../analytics.js";
 import { Alert, Box, Button, Link, Typography } from "@mui/material";
 
 const STORAGE_KEY = "campsync-cookie-consent";
@@ -11,7 +12,7 @@ export default function CookieConsent() {
     window.dispatchEvent(new CustomEvent("campsync:consent", { detail: value }));
   };
   useEffect(() => {
-    if (choice === "accepted") window.dispatchEvent(new CustomEvent("campsync:consent", { detail: choice }));
+    if (choice === "accepted") { enableAnalytics(); window.dispatchEvent(new CustomEvent("campsync:consent", { detail: choice })); }
   }, [choice]);
   if (choice) return null;
   return <Box role="region" aria-label="Cookie preferences" sx={{ position: "fixed", zIndex: 1500, bottom: 16, left: { xs: 12, sm: 24 }, right: { xs: 12, sm: 24 }, maxWidth: 760, mx: "auto", p: 2.5, border: 1, borderColor: "divider", borderRadius: 3, bgcolor: "background.paper", boxShadow: "0 12px 48px rgba(0,0,0,.2)" }}>
