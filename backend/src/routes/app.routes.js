@@ -5,6 +5,7 @@ import { settingRoutes } from "./setting.route.js";
 import { studentRoutes } from "./student.route.js";
 import { subjectRoutes } from "./subject.route.js";
 import { teacherRoutes } from "./teacher.route.js";
+import { contactRoutes } from "./contact.route.js";
 
 export {
   attendanceRoutes,
@@ -14,4 +15,5 @@ export {
   studentRoutes,
   subjectRoutes,
   teacherRoutes,
+  contactRoutes,
 };
