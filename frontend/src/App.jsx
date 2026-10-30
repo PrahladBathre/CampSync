@@ -19,6 +19,10 @@ import UserProvider from "./pages/UserContext/UserContext.jsx";
 import UpdateUser from "./pages/UpdateUser/UpdateUser.jsx";
 import EmailVerification from "./pages/EmailVerification/EmailVerification.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
+import Contact from "./pages/Contact/Contact.jsx";
+import LegalPages from "./pages/Legal/LegalPages.jsx";
+import ThankYou from "./pages/ThankYou/ThankYou.jsx";
+import CookieConsent from "./components/CookieConsent.jsx";
 
 function App() {
   const [theme, colorMode] = useThemeMode();
@@ -28,17 +32,18 @@ function App() {
         <UserProvider>
           <CssBaseline />
           <BrowserRouter>
+            <CookieConsent />
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route
-                path="/emailVerification"
-                element={<EmailVerification />}
-              />
+              <Route path="/emailVerification" element={<EmailVerification />} />
+              <Route path="/privacy" element={<LegalPages type="privacy" />} />
+              <Route path="/terms" element={<LegalPages type="terms" />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/support" element={<Contact support />} />
+              <Route path="/thank-you" element={<ThankYou />} />
               <Route path="/" element={<Layout />}>
                 <Route index element={<Dashboard />} />
-
-                {/* student page */}
                 <Route path="student" element={<Students />} />
                 <Route path="course" element={<Course />} />
                 <Route path="subject" element={<Subjects />} />
@@ -57,5 +62,4 @@ function App() {
     </ThemeModeContext.Provider>
   );
 }
-
 export default App;
