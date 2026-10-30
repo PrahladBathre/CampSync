@@ -18,6 +18,7 @@ import Register from "./pages/Register/Register.jsx";
 import UserProvider from "./pages/UserContext/UserContext.jsx";
 import UpdateUser from "./pages/UpdateUser/UpdateUser.jsx";
 import EmailVerification from "./pages/EmailVerification/EmailVerification.jsx";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 
 function App() {
   const [theme, colorMode] = useThemeMode();
@@ -48,6 +49,7 @@ function App() {
                 <Route path="linechart" element={<LineChart />} />
                 <Route path="UpdateUser" element={<UpdateUser />} />
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </UserProvider>
