@@ -6,6 +6,7 @@ const STORAGE_KEY = "campsync-cookie-consent";
 export default function CookieConsent() {
   const [choice, setChoice] = useState(() => { try { return localStorage.getItem(STORAGE_KEY); } catch { return null; } });
   const [showSettings, setShowSettings] = useState(false);
+  useEffect(() => { const reopen = () => setChoice(null); window.addEventListener("campsync:open-cookie-settings", reopen); return () => window.removeEventListener("campsync:open-cookie-settings", reopen); }, []);
   const save = (value) => {
     try { localStorage.setItem(STORAGE_KEY, value); } catch {}
     setChoice(value);
