@@ -23,6 +23,7 @@ import Contact from "./pages/Contact/Contact.jsx";
 import LegalPages from "./pages/Legal/LegalPages.jsx";
 import ThankYou from "./pages/ThankYou/ThankYou.jsx";
 import CookieConsent from "./components/CookieConsent.jsx";
+import SiteFooter from "./components/SiteFooter.jsx";
 
 function App() {
   const [theme, colorMode] = useThemeMode();
@@ -56,6 +57,7 @@ function App() {
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <SiteFooter />
           </BrowserRouter>
         </UserProvider>
       </ThemeProvider>
