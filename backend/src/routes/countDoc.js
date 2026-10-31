@@ -9,34 +9,18 @@ import ApiError from "../utils/ApiError.js";
 
 export const countDocuments = Router();
 
-countDocuments.get(
-  "/v1/count-doc",
-  asyncHandler(async (req, res) => {
-    const teacherCount = await Teacher.countDocuments();
-    const subjectCount = await Subject.countDocuments();
-    const studentCount = await Student.countDocuments();
-    const courseCount = await Course.countDocuments();
+countDocuments.get("/v1/count-doc", asyncHandler(async (_req, res) => {
+  const [teacherCount, subjectCount, studentCount, courseCount] = await Promise.all([
+    Teacher.countDocuments().exec(),
+    Subject.countDocuments().exec(),
+    Student.countDocuments().exec(),
+    Course.countDocuments().exec(),
+  ]);
 
-    // Optional: Only throw if all counts are 0 (not individually falsey)
-    const allZero = [
-      teacherCount,
-      subjectCount,
-      studentCount,
-      courseCount,
-    ].every((count) => count === 0);
-    if (allZero) {
-      throw new ApiError(404, "No documents found in any collection.");
-    }
+  if ([teacherCount, subjectCount, studentCount, courseCount].every((count) => count === 0)) {
+    throw new ApiError(404, "No documents found in any collection.");
+  }
 
-    const count = {
-      teachers: teacherCount,
-      subjects: subjectCount,
-      students: studentCount,
-      courses: courseCount,
-    };
-
-    res
-      .status(200)
-      .json(new ApiResponse(200, count, "Counts fetched successfully"));
-  })
-);
+  const count = { teachers: teacherCount, subjects: subjectCount, students: studentCount, courses: courseCount };
+  return res.status(200).json(new ApiResponse(200, count, "Counts fetched successfully"));
+}));

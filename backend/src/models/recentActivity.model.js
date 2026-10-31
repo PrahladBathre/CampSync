@@ -1,4 +1,3 @@
-// models/Activity.js
 import mongoose from "mongoose";
 
 const activitySchema = new mongoose.Schema(
@@ -8,5 +7,7 @@ const activitySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+activitySchema.index({ date: -1 });
 
 export const Activity = mongoose.model("Activity", activitySchema);
