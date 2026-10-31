@@ -296,7 +296,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     );
   }
 
-  const teacher = await Teacher.findById(`${decodedToken?._id}`);
+  const teacher = await Teacher.findById(`${decodedToken?._id}`).select("+teacherRefreshToken +teacherRefreshTokens");
 
   if (!teacher) {
     throw new ApiError(401, "Unauthorized request. Invalid refresh token.");
