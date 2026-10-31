@@ -8,16 +8,10 @@ import { capitalize } from "../utils/capitalize.js";
 import { sendEmailVerificationCode } from "../utils/emailOtpToTeacher.js";
 import { Activity } from "../models/recentActivity.model.js";
 
-const generateAccessAndRefreshTokens = async (teacherId) => {
-  const teacher = await Teacher.findById(teacherId);
-  if (!teacher)
-    throw new ApiError(404, "Teacher not found during token generation.");
-  const accessToken = teacher.generateAccessToken();
-  const refreshToken = teacher.generateRefreshToken();
-  teacher.teacherRefreshToken = refreshToken;
-  await teacher.save({ validateBeforeSave: false });
-  return { accessToken, refreshToken };
-};
+const generateAccessAndRefreshTokens = async (teacher) => ({
+  accessToken: teacher.generateAccessToken(),
+  refreshToken: teacher.generateRefreshToken(),
+});
 
 const registerTeacher = asyncHandler(async (req, res) => {
   let {
@@ -220,12 +214,15 @@ const loginTeacher = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid credentials.");
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-    teacher._id
-  );
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(teacher);
 
+  // Add a device-specific refresh token atomically; other devices remain signed in.
+  await Teacher.updateOne(
+    { _id: teacher._id },
+    { $addToSet: { teacherRefreshTokens: refreshToken } }
+  );
   const loggedInTeacher = await Teacher.findById(teacher._id).select(
-    "-teacherPassword -teacherRefreshToken"
+    "-teacherPassword -teacherRefreshToken -teacherRefreshTokens"
   );
 
   const accessOption = {
@@ -305,15 +302,22 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized request. Invalid refresh token.");
   }
 
-  if (incomingRefreshToken !== teacher.teacherRefreshToken) {
-    throw new ApiError(
-      401,
-      "Refresh token is expired or invalid. Please log in again."
-    );
+  const isLegacySession = incomingRefreshToken === teacher.teacherRefreshToken;
+  const hasDeviceSession = (teacher.teacherRefreshTokens || []).includes(incomingRefreshToken);
+  if (!isLegacySession && !hasDeviceSession) {
+    throw new ApiError(401, "Refresh token is expired or invalid. Please log in again.");
   }
 
-  const { accessToken, refreshToken: newRefreshToken } =
-    await generateAccessAndRefreshTokens(teacher._id);
+  const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshTokens(teacher);
+  // Compare-and-swap rotation prevents replay and avoids one device overwriting another.
+  const rotationFilter = isLegacySession
+    ? { _id: teacher._id, teacherRefreshToken: incomingRefreshToken }
+    : { _id: teacher._id, teacherRefreshTokens: incomingRefreshToken };
+  const rotationUpdate = isLegacySession
+    ? { $set: { teacherRefreshToken: newRefreshToken } }
+    : { $addToSet: { teacherRefreshTokens: newRefreshToken }, $pull: { teacherRefreshTokens: incomingRefreshToken } };
+  const rotation = await Teacher.updateOne(rotationFilter, rotationUpdate);
+  if (!rotation.modifiedCount) throw new ApiError(401, "Session was already refreshed. Please retry.");
 
   const options = {
     httpOnly: true,
