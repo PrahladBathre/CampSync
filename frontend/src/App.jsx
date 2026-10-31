@@ -1,30 +1,31 @@
 /* eslint-disable no-unused-vars */
 import "./App.css";
 import { ThemeModeContext, useThemeMode } from "./theme/theme.js";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider, Box, CircularProgress } from "@mui/material";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useRef } from "react";
-import Layout from "./Layout/Layout.jsx";
-import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import Students from "./pages/Students/Students.jsx";
-import Course from "./pages/Course/Course.jsx";
-import Subjects from "./pages/Subjects/Subjects.jsx";
-import Teachers from "./pages/Teachers/Teachers.jsx";
-import Attendance from "./pages/Attendance/Attendance.jsx";
-import PieChart from "./pages/Charts/PieChart.jsx";
-import BarChart from "./pages/Charts/BarChart.jsx";
-import LineChart from "./pages/Charts/LineChart.jsx";
-import Login from "./pages/Login/Login.jsx";
-import Register from "./pages/Register/Register.jsx";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import UserProvider from "./pages/UserContext/UserContext.jsx";
-import UpdateUser from "./pages/UpdateUser/UpdateUser.jsx";
-import EmailVerification from "./pages/EmailVerification/EmailVerification.jsx";
-import NotFound from "./pages/NotFound/NotFound.jsx";
-import Contact from "./pages/Contact/Contact.jsx";
-import LegalPages from "./pages/Legal/LegalPages.jsx";
-import ThankYou from "./pages/ThankYou/ThankYou.jsx";
 import CookieConsent from "./components/CookieConsent.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
+
+const Layout = lazy(() => import("./Layout/Layout.jsx"));
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard.jsx"));
+const Students = lazy(() => import("./pages/Students/Students.jsx"));
+const Course = lazy(() => import("./pages/Course/Course.jsx"));
+const Subjects = lazy(() => import("./pages/Subjects/Subjects.jsx"));
+const Teachers = lazy(() => import("./pages/Teachers/Teachers.jsx"));
+const Attendance = lazy(() => import("./pages/Attendance/Attendance.jsx"));
+const PieChart = lazy(() => import("./pages/Charts/PieChart.jsx"));
+const BarChart = lazy(() => import("./pages/Charts/BarChart.jsx"));
+const LineChart = lazy(() => import("./pages/Charts/LineChart.jsx"));
+const Login = lazy(() => import("./pages/Login/Login.jsx"));
+const Register = lazy(() => import("./pages/Register/Register.jsx"));
+const UpdateUser = lazy(() => import("./pages/UpdateUser/UpdateUser.jsx"));
+const EmailVerification = lazy(() => import("./pages/EmailVerification/EmailVerification.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound/NotFound.jsx"));
+const Contact = lazy(() => import("./pages/Contact/Contact.jsx"));
+const LegalPages = lazy(() => import("./pages/Legal/LegalPages.jsx"));
+const ThankYou = lazy(() => import("./pages/ThankYou/ThankYou.jsx"));
 
 const seoPages = {
   "/login": ["Sign in | CampSync", "Sign in to your CampSync academic workspace.", false],
@@ -69,6 +70,10 @@ function AnalyticsPageTracker() {
   return null;
 }
 
+function RouteFallback() {
+  return <Box role="status" aria-label="Loading page" sx={{ minHeight: "40vh", display: "grid", placeItems: "center" }}><CircularProgress size={28} /></Box>;
+}
+
 function App() {
   const [theme, colorMode] = useThemeMode();
   return (
@@ -78,29 +83,31 @@ function App() {
           <CssBaseline />
           <BrowserRouter>
             <CookieConsent />
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/emailVerification" element={<EmailVerification />} />
-              <Route path="/privacy" element={<LegalPages type="privacy" />} />
-              <Route path="/terms" element={<LegalPages type="terms" />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/support" element={<Contact support />} />
-              <Route path="/thank-you" element={<ThankYou />} />
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="student" element={<Students />} />
-                <Route path="course" element={<Course />} />
-                <Route path="subject" element={<Subjects />} />
-                <Route path="teacher" element={<Teachers />} />
-                <Route path="attendance" element={<Attendance />} />
-                <Route path="barchart" element={<BarChart />} />
-                <Route path="piechart" element={<PieChart />} />
-                <Route path="linechart" element={<LineChart />} />
-                <Route path="UpdateUser" element={<UpdateUser />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/emailVerification" element={<EmailVerification />} />
+                <Route path="/privacy" element={<LegalPages type="privacy" />} />
+                <Route path="/terms" element={<LegalPages type="terms" />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/support" element={<Contact support />} />
+                <Route path="/thank-you" element={<ThankYou />} />
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="student" element={<Students />} />
+                  <Route path="course" element={<Course />} />
+                  <Route path="subject" element={<Subjects />} />
+                  <Route path="teacher" element={<Teachers />} />
+                  <Route path="attendance" element={<Attendance />} />
+                  <Route path="barchart" element={<BarChart />} />
+                  <Route path="piechart" element={<PieChart />} />
+                  <Route path="linechart" element={<LineChart />} />
+                  <Route path="UpdateUser" element={<UpdateUser />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
             <SiteFooter />
           </BrowserRouter>
         </UserProvider>
