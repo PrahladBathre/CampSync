@@ -219,7 +219,7 @@ const loginTeacher = asyncHandler(async (req, res) => {
   // Add a device-specific refresh token atomically; other devices remain signed in.
   await Teacher.updateOne(
     { _id: teacher._id },
-    { $addToSet: { teacherRefreshTokens: refreshToken } }
+    { $push: { teacherRefreshTokens: { $each: [refreshToken], $slice: -10 } } }
   );
   const loggedInTeacher = await Teacher.findById(teacher._id).select(
     "-teacherPassword -teacherRefreshToken -teacherRefreshTokens"
