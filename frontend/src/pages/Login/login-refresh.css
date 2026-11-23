@@ -278,3 +278,78 @@ body:has(.camp-login-shell) #root {
   .camp-login-main { overflow-y: auto; padding-block: 12px; }
   .camp-login-card { max-height: none; }
 }
+
+
+/* Final login action contrast: colors follow the app's MUI theme, not OS theme. */
+.camp-login-card .camp-login-switch.MuiButton-root,
+.camp-login-card .camp-login-create-account.MuiButton-root {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  flex: 0 0 auto !important;
+  color: var(--login-action) !important;
+  border: 2px solid var(--login-action) !important;
+  background: var(--login-action-bg) !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 10;
+}
+.camp-login-card .camp-login-switch.MuiButton-root {
+  align-self: center;
+  min-height: 44px;
+  min-width: 190px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  white-space: normal;
+}
+.camp-login-card .camp-login-create-account.MuiButton-root {
+  min-height: 46px;
+  min-width: 170px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.camp-login-card .camp-login-switch.MuiButton-root:hover,
+.camp-login-card .camp-login-create-account.MuiButton-root:hover {
+  color: var(--login-action-hover) !important;
+  border-color: var(--login-action-hover) !important;
+  background: var(--login-action-bg) !important;
+}
+.camp-login-card .camp-login-signup {
+  min-height: 64px;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.camp-login-main {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-block: 24px !important;
+}
+.camp-login-card {
+  max-height: none !important;
+  overflow: visible !important;
+  padding-block: 8px;
+}
+.camp-login-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto !important;
+  overflow: visible !important;
+}
+@media (max-height: 820px) {
+  .camp-login-main { padding-block: 12px !important; }
+  .camp-login-icon { margin-bottom: 10px; }
+  .camp-login-demo { margin-top: 10px; padding: 10px 12px; gap: 6px; }
+  .camp-login-fields { margin-top: 14px; gap: 12px; }
+  .camp-login-submit.MuiButton-root { margin-top: 12px; }
+  .camp-login-switch.MuiButton-root { margin-top: 8px; }
+  .camp-login-signup { margin-top: 12px; padding-top: 10px; }
+  .camp-login-footnote.MuiTypography-root { margin-top: 10px; }
+}
