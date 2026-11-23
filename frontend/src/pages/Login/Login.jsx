@@ -63,6 +63,11 @@ export default function Login() {
         <Box className="camp-login-icon"><GraduationCap size={25} strokeWidth={1.8} /></Box>
         <Typography component="h2" className="camp-login-title">Welcome back</Typography>
         <Typography className="camp-login-subtitle">Sign in to continue to your workspace.</Typography>
+        <Box className="camp-login-demo" aria-label="Recruiter demo account">
+          <Box><Typography className="camp-login-demo-title">Recruiter demo account</Typography><Typography className="camp-login-demo-copy">Explore CampSync using the demo teacher account.</Typography></Box>
+          <Box className="camp-login-demo-credentials"><Typography component="span">Username: <strong>demoteach</strong></Typography><Typography component="span">Password: <strong>CampSyncDemo2026!</strong></Typography></Box>
+          <Button type="button" variant="outlined" onClick={() => { setEmailLogin(false); setUser({ teacherUsername: "demoteach", teacherEmail: "", teacherPassword: "CampSyncDemo2026!" }); setError(""); }}>Use demo credentials</Button>
+        </Box>
         {error && <Alert severity="error" sx={{mt:2,mb:1}} role="alert">{error}</Alert>}
         <Box className="camp-login-fields">
           <TextField fullWidth label={isEmailLogin ? "Email address" : "Username"} name={isEmailLogin ? "teacherEmail" : "teacherUsername"} autoComplete={isEmailLogin ? "email" : "username"} required value={isEmailLogin ? user.teacherEmail : user.teacherUsername} onChange={(e)=>setUser({...user,[e.target.name]:e.target.value})} InputProps={{startAdornment:<InputAdornment position="start">{isEmailLogin?<Mail size={18}/>:<UserRound size={18}/>}</InputAdornment>}} inputProps={{"aria-label":isEmailLogin ? "Email address" : "Username"}} />
@@ -70,7 +75,7 @@ export default function Login() {
         </Box>
         <Button type="submit" endIcon={!loading && <ArrowRight size={18}/>} fullWidth variant="contained" disabled={loading} className="camp-login-submit">{loading ? <><CircularProgress size={18} color="inherit" sx={{mr:1}}/>Signing you in…</> : "Sign in"}</Button>
         <Button className="camp-login-switch" onClick={()=>{setEmailLogin(v=>!v);setError("");}}>{isEmailLogin ? "Use username instead" : "Sign in with email instead"}</Button>
-        <Box className="camp-login-signup"><Typography>New to CampSync?</Typography><Button onClick={()=>navigate("/register")}>Create an account</Button></Box>
+        <Box className="camp-login-signup"><Typography sx={{ color: "text.secondary" }}>New to CampSync?</Typography><Button className="camp-login-create-account" variant="outlined" onClick={()=>navigate("/register")} sx={{ display: "inline-flex !important", visibility: "visible !important", opacity: "1 !important", flex: "0 0 auto", minWidth: "150px", color: (theme) => theme.palette.mode === "dark" ? "#f8c2d2 !important" : "#7a1046 !important", borderColor: (theme) => theme.palette.mode === "dark" ? "#f8c2d2 !important" : "#7a1046 !important", backgroundColor: "transparent !important", fontWeight: 700, "&:hover": { color: (theme) => theme.palette.mode === "dark" ? "#ffffff !important" : "#4f082d !important", borderColor: (theme) => theme.palette.mode === "dark" ? "#ffffff !important" : "#4f082d !important", backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(248,194,210,.12) !important" : "rgba(122,16,70,.08) !important" } }}>Create an account</Button></Box>
         <Typography className="camp-login-footnote">Secure access for your campus community</Typography>
       </Box>
     </Box>
