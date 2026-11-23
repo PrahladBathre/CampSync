@@ -188,3 +188,93 @@ body:has(.camp-login-shell) #root {
   border-color: #4f082d !important;
   background: rgba(122,16,70,.08) !important;
 }
+
+
+/* Strong, accessible action styling for both login and registration actions. */
+.camp-login-card .camp-login-submit.MuiButton-root {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 18px;
+  border: 2px solid #74103f !important;
+  border-radius: 12px;
+  background: #9d174d !important;
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  box-shadow: 0 3px 10px rgba(116,16,63,.2);
+}
+.camp-login-card .camp-login-submit.MuiButton-root:hover {
+  background: #74103f !important;
+  border-color: #5c0c32 !important;
+}
+.camp-login-card .camp-login-submit.MuiButton-root.Mui-disabled {
+  background: #9d174d !important;
+  color: #fff !important;
+  opacity: .62;
+}
+.camp-login-card .camp-login-create-account.MuiButton-root {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 150px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 2px solid #74103f !important;
+  border-radius: 10px;
+  background: rgba(116,16,63,.06) !important;
+  color: #74103f !important;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+  white-space: nowrap;
+  position: relative;
+  z-index: 5;
+}
+.camp-login-card .camp-login-create-account.MuiButton-root:hover {
+  border-color: #4f082d !important;
+  background: rgba(116,16,63,.14) !important;
+  color: #4f082d !important;
+}
+.camp-login-card .camp-login-switch.MuiButton-root {
+  color: #74103f !important;
+  border: 1.5px solid #74103f !important;
+  background: rgba(116,16,63,.05) !important;
+  font-weight: 750;
+}
+.camp-login-card .camp-login-switch.MuiButton-root:hover {
+  background: rgba(116,16,63,.13) !important;
+}
+.camp-login-signup {
+  gap: 8px;
+  min-height: 58px;
+  flex-wrap: wrap;
+}
+@media (prefers-color-scheme: dark) {
+  .camp-login-card .camp-login-create-account.MuiButton-root {
+    border-color: #ffd7e6 !important;
+    background: rgba(255,215,230,.10) !important;
+    color: #ffd7e6 !important;
+  }
+  .camp-login-card .camp-login-create-account.MuiButton-root:hover {
+    border-color: #fff !important;
+    background: rgba(255,215,230,.18) !important;
+    color: #fff !important;
+  }
+  .camp-login-card .camp-login-switch.MuiButton-root {
+    color: #ffd7e6 !important;
+    border-color: #ffd7e6 !important;
+    background: rgba(255,215,230,.08) !important;
+  }
+  .camp-login-card .camp-login-submit.MuiButton-root {
+    background: #a51d58 !important;
+    border-color: #ffd7e6 !important;
+  }
+}
+@media (max-height: 760px) {
+  .camp-login-main { overflow-y: auto; padding-block: 12px; }
+  .camp-login-card { max-height: none; }
+}
