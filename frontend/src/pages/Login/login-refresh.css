@@ -78,3 +78,12 @@
   background-color: rgba(203,70,129,.10) !important;
   border-color: #a8175e !important;
 }
+
+
+/* Recruiter demo credentials */
+.camp-login-demo{display:grid;gap:10px;margin-top:20px;padding:14px 16px;border:1px solid rgba(203,70,129,.28);border-radius:12px;background:rgba(203,70,129,.045)}
+.camp-login-demo-title.MuiTypography-root{font-size:13px;font-weight:700}
+.camp-login-demo-copy.MuiTypography-root{font-size:12px;margin-top:3px;opacity:.76}
+.camp-login-demo-credentials{display:grid;gap:4px;font-size:12px;overflow-wrap:anywhere}
+.camp-login-demo-credentials strong{font-weight:700}
+.camp-login-demo .MuiButton-root{justify-self:start;min-height:36px;padding:6px 12px;font-size:12px}
