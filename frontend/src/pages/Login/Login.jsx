@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Alert, Box, Button, CircularProgress, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, IconButton, InputAdornment, TextField, Typography, useTheme } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { GraduationCap, Mail, UserRound, LockKeyhole, ArrowRight } from "lucide-react";
@@ -12,6 +12,8 @@ import "./login-refresh.css";
 export default function Login() {
   const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
+  const loginTheme = useTheme();
+  const isDark = loginTheme.palette.mode === "dark";
   const [user, setUser] = useState({ teacherUsername: "", teacherEmail: "", teacherPassword: "" });
   const [isEmailLogin, setEmailLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +61,7 @@ export default function Login() {
     </Box>
     <Box className="camp-login-main">
       <Box className="camp-login-mobile-brand"><LogoSync /></Box>
-      <Box component="form" className="camp-login-card" onSubmit={handlerLogin}>
+      <Box component="form" className="camp-login-card" onSubmit={handlerLogin} style={{ "--login-action": isDark ? "#ffe4ee" : "#651039", "--login-action-hover": isDark ? "#ffffff" : "#3f0823", "--login-action-bg": isDark ? "rgba(255,228,238,.12)" : "rgba(101,16,57,.08)", "--login-submit": isDark ? "#ad245f" : "#8b1248" }}>
         <Box className="camp-login-icon"><GraduationCap size={25} strokeWidth={1.8} /></Box>
         <Typography component="h2" className="camp-login-title">Welcome back</Typography>
         <Typography className="camp-login-subtitle">Sign in to continue to your workspace.</Typography>
@@ -74,8 +76,8 @@ export default function Login() {
           <TextField fullWidth label="Password" name="teacherPassword" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={user.teacherPassword} onChange={(e)=>setUser({...user,teacherPassword:e.target.value})} inputProps={{"aria-label":"Password"}} InputProps={{startAdornment:<InputAdornment position="start"><LockKeyhole size={18}/></InputAdornment>,endAdornment:<InputAdornment position="end"><IconButton aria-label={showPassword ? "Hide password" : "Show password"} onClick={()=>setShowPassword(v=>!v)} edge="end">{showPassword ? <VisibilityOffOutlinedIcon/> : <VisibilityOutlinedIcon/>}</IconButton></InputAdornment>}} />
         </Box>
         <Button type="submit" endIcon={!loading && <ArrowRight size={18}/>} fullWidth variant="contained" disabled={loading} className="camp-login-submit" sx={{ display: "inline-flex !important", visibility: "visible !important", opacity: "1 !important", minHeight: 50, color: "#ffffff !important", backgroundColor: "#9d174d !important", fontWeight: 800, fontSize: 15, "&:hover": { backgroundColor: "#74103f !important" }, "&.Mui-disabled": { color: "#ffffff !important", backgroundColor: "#9d174d !important", opacity: .6 } }}>{loading ? <><CircularProgress size={18} color="inherit" sx={{mr:1}}/>Signing you in…</> : "Sign in"}</Button>
-        <Button type="button" className="camp-login-switch" onClick={()=>{setEmailLogin(v=>!v);setError("");}}>{isEmailLogin ? "Use username instead" : "Sign in with email instead"}</Button>
-        <Box className="camp-login-signup"><Typography sx={{ color: "text.secondary" }}>New to CampSync?</Typography><Button type="button" className="camp-login-create-account" variant="outlined" onClick={()=>navigate("/register")} sx={{ display: "inline-flex !important", visibility: "visible !important", opacity: "1 !important", flex: "0 0 auto", minWidth: "150px", minHeight: 44, color: (theme) => theme.palette.mode === "dark" ? "#ffe1ec !important" : "#74103f !important", border: (theme) => theme.palette.mode === "dark" ? "2px solid #ffe1ec !important" : "2px solid #74103f !important", backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(255,225,236,.08) !important" : "rgba(116,16,63,.06) !important", fontWeight: 700, "&:hover": { color: (theme) => theme.palette.mode === "dark" ? "#ffffff !important" : "#4f082d !important", borderColor: (theme) => theme.palette.mode === "dark" ? "#ffffff !important" : "#4f082d !important", backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(248,194,210,.16) !important" : "rgba(122,16,70,.12) !important" } }}>Create an account</Button></Box>
+        <Button type="button" className="camp-login-switch" onClick={()=>{setEmailLogin(v=>!v);setError("");}} sx={{ color: "var(--login-action) !important", borderColor: "var(--login-action) !important", backgroundColor: "var(--login-action-bg) !important", fontWeight: 800, "&:hover": { color: "var(--login-action-hover) !important", borderColor: "var(--login-action-hover) !important", backgroundColor: "var(--login-action-bg) !important" } }}>{isEmailLogin ? "Use username instead" : "Sign in with email instead"}</Button>
+        <Box className="camp-login-signup"><Typography sx={{ color: "text.secondary" }}>New to CampSync?</Typography><Button type="button" className="camp-login-create-account" variant="outlined" onClick={()=>navigate("/register")} sx={{ display: "inline-flex !important", visibility: "visible !important", opacity: "1 !important", flex: "0 0 auto", minWidth: "150px", minHeight: 44, color: "var(--login-action) !important", border: "2px solid var(--login-action) !important", backgroundColor: "var(--login-action-bg) !important", fontWeight: 700, "&:hover": { color: "var(--login-action-hover) !important", borderColor: "var(--login-action-hover) !important", backgroundColor: "var(--login-action-bg) !important" } }}>Create an account</Button></Box>
         <Typography className="camp-login-footnote">Secure access for your campus community</Typography>
       </Box>
     </Box>
