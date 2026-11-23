@@ -280,7 +280,7 @@ export const createCustomTheme = (mode) => {
             backgroundColor: "background.paper",
             color: "text.primary",
             "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader, & .MuiDataGrid-filler": {
-              backgroundColor: mode === "dark" ? "#292532" : "#f6eaf1",
+              backgroundColor: mode === "dark" ? "#292532" : "transparent",
               color: mode === "dark" ? "#ffffff" : "#302536",
               borderBottom: "1px solid",
               borderColor: "divider",
@@ -409,8 +409,8 @@ export const createCustomTheme = (mode) => {
             borderColor: colors.grey[600],
             color: colors.text[100],
             backgroundColor: mode === "dark" ? "rgba(19,16,24,.82)" : "rgba(255,255,255,.9)",
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: mode === "dark" ? "rgba(203,70,129,.16)" : "rgba(203,70,129,.09)",
+            "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader, & .MuiDataGrid-filler, & .MuiDataGrid-scrollbarFiller--header": {
+              backgroundColor: mode === "dark" ? "rgba(203,70,129,.16)" : "transparent",
               borderBottom: `1px solid ${colors.grey[600]}`,
             },
             "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700 },
