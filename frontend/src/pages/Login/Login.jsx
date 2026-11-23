@@ -63,6 +63,11 @@ export default function Login() {
         <Box className="camp-login-icon"><GraduationCap size={25} strokeWidth={1.8} /></Box>
         <Typography component="h2" className="camp-login-title">Welcome back</Typography>
         <Typography className="camp-login-subtitle">Sign in to continue to your workspace.</Typography>
+        <Box className="camp-login-demo" aria-label="Recruiter demo account">
+          <Box><Typography className="camp-login-demo-title">Recruiter demo account</Typography><Typography className="camp-login-demo-copy">Explore CampSync using the demo teacher account.</Typography></Box>
+          <Box className="camp-login-demo-credentials"><Typography component="span">Username: <strong>demoteach</strong></Typography><Typography component="span">Password: <strong>CampSyncDemo2026!</strong></Typography></Box>
+          <Button type="button" variant="outlined" onClick={() => { setEmailLogin(false); setUser({ teacherUsername: "demoteach", teacherEmail: "", teacherPassword: "CampSyncDemo2026!" }); setError(""); }}>Use demo credentials</Button>
+        </Box>
         {error && <Alert severity="error" sx={{mt:2,mb:1}} role="alert">{error}</Alert>}
         <Box className="camp-login-fields">
           <TextField fullWidth label={isEmailLogin ? "Email address" : "Username"} name={isEmailLogin ? "teacherEmail" : "teacherUsername"} autoComplete={isEmailLogin ? "email" : "username"} required value={isEmailLogin ? user.teacherEmail : user.teacherUsername} onChange={(e)=>setUser({...user,[e.target.name]:e.target.value})} InputProps={{startAdornment:<InputAdornment position="start">{isEmailLogin?<Mail size={18}/>:<UserRound size={18}/>}</InputAdornment>}} inputProps={{"aria-label":isEmailLogin ? "Email address" : "Username"}} />
