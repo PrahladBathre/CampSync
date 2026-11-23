@@ -6,7 +6,7 @@ import { Search, Sparkles, X } from "lucide-react";
 const GridWrapper = ({ columns = [], rows = [], isDatafetched, loading }) => {
   const apiRef = useGridApiRef();
   const theme = useTheme();
-  const headerBg = theme.palette.mode === "dark" ? "#292532" : "#f6eaf1";
+  const headerBg = theme.palette.mode === "dark" ? "#292532" : "transparent";
   const headerText = theme.palette.mode === "dark" ? "#ffffff" : "#302536";
   const [search, setSearch] = useState("");
 
@@ -79,7 +79,7 @@ const GridWrapper = ({ columns = [], rows = [], isDatafetched, loading }) => {
             overflow: "hidden",
             backgroundColor: "background.paper",
             color: "text.primary",
-            "& .MuiDataGrid-columnHeaders": { backgroundColor: `${headerBg} !important`, color: `${headerText} !important`, borderBottom: 1, borderColor: "divider" },
+            "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader, & .MuiDataGrid-filler, & .MuiDataGrid-scrollbarFiller--header": { backgroundColor: `${headerBg} !important`, color: `${headerText} !important`, borderBottom: 1, borderColor: "divider" },
             "& .MuiDataGrid-columnHeader, & .MuiDataGrid-columnHeaderTitle, & .MuiDataGrid-columnHeaderTitleContainer, & .MuiDataGrid-columnHeader .MuiIconButton-root": { color: `${headerText} !important`, opacity: "1 !important" },
             "& .MuiDataGrid-columnHeader .MuiSvgIcon-root": { color: `${headerText} !important` },
             "& .MuiDataGrid-columnHeaderTitle": { fontWeight: 700, whiteSpace: "normal", lineHeight: 1.25 },
