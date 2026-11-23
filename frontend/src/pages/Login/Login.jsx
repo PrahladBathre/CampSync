@@ -75,7 +75,7 @@ export default function Login() {
         </Box>
         <Button type="submit" endIcon={!loading && <ArrowRight size={18}/>} fullWidth variant="contained" disabled={loading} className="camp-login-submit">{loading ? <><CircularProgress size={18} color="inherit" sx={{mr:1}}/>Signing you in…</> : "Sign in"}</Button>
         <Button className="camp-login-switch" onClick={()=>{setEmailLogin(v=>!v);setError("");}}>{isEmailLogin ? "Use username instead" : "Sign in with email instead"}</Button>
-        <Box className="camp-login-signup"><Typography>New to CampSync?</Typography><Button onClick={()=>navigate("/register")}>Create an account</Button></Box>
+        <Box className="camp-login-signup"><Typography sx={{ color: "text.secondary" }}>New to CampSync?</Typography><Button className="camp-login-create-account" variant="text" onClick={()=>navigate("/register")} sx={{ color: (theme) => theme.palette.mode === "dark" ? "#f8c2d2" : "#8c0f4b", fontWeight: 700, backgroundColor: "transparent", "&:hover": { color: (theme) => theme.palette.mode === "dark" ? "#ffffff" : "#5d0932", backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(248,194,210,.12)" : "rgba(140,15,75,.08)" } }}>Create an account</Button></Box>
         <Typography className="camp-login-footnote">Secure access for your campus community</Typography>
       </Box>
     </Box>
